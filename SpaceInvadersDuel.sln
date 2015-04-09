@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceInvadersDuel", "SpaceInvadersDuel\SpaceInvadersDuel.csproj", "{E38A877F-D38B-4F27-A214-BBB36C60806F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceInvaders", "SpaceInvaders\SpaceInvaders.csproj", "{CFA0285C-1E91-4D94-A5EE-476FB4F20F84}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceInvadersTest", "SpaceInvadersTest\SpaceInvadersTest.csproj", "{997694D9-5188-426C-B60B-5FE0BD8C8285}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChallengeHarness", "ChallengeHarness\ChallengeHarness.csproj", "{9F2ACDCB-E728-4531-85A6-F70A3FA3B64D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{D10CD27D-6671-4EF7-9136-BB63EF87BD47}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChallengeHarnessInterfaces", "ChallengeHarnessInterfaces\ChallengeHarnessInterfaces.csproj", "{E4FE271C-4721-4181-A614-F552EA6F2F55}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E38A877F-D38B-4F27-A214-BBB36C60806F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E38A877F-D38B-4F27-A214-BBB36C60806F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E38A877F-D38B-4F27-A214-BBB36C60806F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E38A877F-D38B-4F27-A214-BBB36C60806F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFA0285C-1E91-4D94-A5EE-476FB4F20F84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFA0285C-1E91-4D94-A5EE-476FB4F20F84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFA0285C-1E91-4D94-A5EE-476FB4F20F84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFA0285C-1E91-4D94-A5EE-476FB4F20F84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{997694D9-5188-426C-B60B-5FE0BD8C8285}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{997694D9-5188-426C-B60B-5FE0BD8C8285}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{997694D9-5188-426C-B60B-5FE0BD8C8285}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{997694D9-5188-426C-B60B-5FE0BD8C8285}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F2ACDCB-E728-4531-85A6-F70A3FA3B64D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F2ACDCB-E728-4531-85A6-F70A3FA3B64D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F2ACDCB-E728-4531-85A6-F70A3FA3B64D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F2ACDCB-E728-4531-85A6-F70A3FA3B64D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4FE271C-4721-4181-A614-F552EA6F2F55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4FE271C-4721-4181-A614-F552EA6F2F55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4FE271C-4721-4181-A614-F552EA6F2F55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4FE271C-4721-4181-A614-F552EA6F2F55}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
