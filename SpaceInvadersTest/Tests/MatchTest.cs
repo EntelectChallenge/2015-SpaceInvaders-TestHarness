@@ -70,7 +70,7 @@ namespace SpaceInvadersTest.Tests
             var result = match.GetResult();
 
             // Then
-            Assert.AreEqual(result, MatchResult.PlayerOneWins, "Player 1 should have won, but didn't.");
+            Assert.AreEqual(MatchResult.PlayerOneWins, result, "Player 1 should have won, but didn't.");
         }
 
         [Test]
@@ -93,7 +93,7 @@ namespace SpaceInvadersTest.Tests
             var result = match.GetResult();
 
             // Then
-            Assert.AreEqual(result, MatchResult.PlayerTwoWins, "Player 2 should have won, but didn't.");
+            Assert.AreEqual(MatchResult.PlayerTwoWins, result, "Player 2 should have won, but didn't.");
         }
 
         [Test]
@@ -493,6 +493,41 @@ namespace SpaceInvadersTest.Tests
             Assert.IsTrue(game.GameIsOver(), "Game did not end.");
             Assert.AreEqual(1, summary.Winner, "Winner was not set to 1.");
             Assert.AreEqual("Match was a tie, so player 1 wins by default.", summary.WinReason, "Win reason was incorrect.");
+        }
+
+        [Test]
+        public void TestBuildingWithOneLifeThenDeathEndsGame() {
+            // Given
+            var game = Match.GetInstance();
+            game.StartNewGame();
+            var p1 = game.GetPlayer(1);
+            p1.Lives = 1;
+
+            // When
+            p1.Ship.Command = ShipCommand.BuildAlienFactory;
+            game.Update();
+
+            p1.Ship.Destroy();
+            game.Update();
+
+            // Then
+            Assert.IsTrue(game.GameIsOver(), "Game did not end.");
+        }
+
+        [Test]
+        public void TestDyingWithZeroLivesEndsGame() {
+            // Given
+            var game = Match.GetInstance();
+            game.StartNewGame();
+            var p1 = game.GetPlayer(1);
+            p1.Lives = 0;
+
+            // When
+            p1.Ship.Destroy();
+            game.Update();
+
+            // Then
+            Assert.IsTrue(game.GameIsOver(), "Game did not end.");
         }
 
         private static Match CreateInterestingGameState(out CoordinateFlipper flipper)

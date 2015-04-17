@@ -94,6 +94,7 @@ namespace SpaceInvaders.Core
             {
                 map.AddEntity(ship);
                 Ship = ship;
+                Lives--;
             }
             catch (CollisionException e)
             {
@@ -114,7 +115,6 @@ namespace SpaceInvaders.Core
         private void OnShipKilled(object sender, EventArgs e)
         {
             Ship = null;
-            Lives--;
             RespawnTimer = Settings.Default.RespawnDelay;
         }
 

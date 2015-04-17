@@ -61,7 +61,7 @@ namespace SpaceInvaders.Renderers
             result.Winner = winner.PlayerNumber;
 
             if (((opponent.Lives <= 0) && (opponent.Ship == null)) &&
-                ((winner.Lives >= 0) || (winner.Ship != null)))
+                ((winner.Lives > 0) || (winner.Ship != null)))
             {
                 result.WinReason = String.Format("Player {0} ran out of lives.", opponent.PlayerNumber);
             }

@@ -9,6 +9,8 @@ namespace SpaceInvadersTest.Tests
     [TestFixture]
     public class ShipTest
     {
+        const int respawnDelay = 3;
+
         [Test]
         public void TestMoveIntoLeftWallPlayerOne()
         {
@@ -336,7 +338,6 @@ namespace SpaceInvadersTest.Tests
             var ship = game.GetPlayer(1).Ship;
 
             // When
-            var initialLives = game.GetPlayer(2).Lives;
             ship.Command = ShipCommand.Shoot;
 
             for (var i = 0; i < game.Map.Height - 2*2; i++)
@@ -344,10 +345,8 @@ namespace SpaceInvadersTest.Tests
                 game.Update();
             }
 
-            var finalLives = game.GetPlayer(2).Lives;
-
             // Then
-            Assert.IsTrue(finalLives < initialLives, "Player did not lose a life as expected.");
+            Assert.IsNull(game.GetPlayer(2).Ship, "Player ship was not destroyed.");
         }
 
         [Test]
@@ -524,13 +523,13 @@ namespace SpaceInvadersTest.Tests
             aliens.TestMakeAllAliensMoveForward();
             ship.Destroy();
 
-            game.Update();
-            game.Update();
-            game.Update();
+            for (var i = 0; i < respawnDelay; i++) {
+                game.Update();
+            }
 
             // Then
             Assert.IsFalse(alien.Alive, "Alien was not destroyed, must've mis-timed the collision.");
-            Assert.AreEqual(1, player.Lives, "Player should have lost 2 lives.");
+            Assert.IsNull(player.Ship, "Ship was not destroyed.");
         }
 
         [Test]
@@ -541,21 +540,25 @@ namespace SpaceInvadersTest.Tests
             game.StartNewGame();
 
             var map = game.Map;
-            var player = game.GetPlayer(1);
-            var ship = player.Ship;
+            var player1 = game.GetPlayer(1);
+            var ship = player1.Ship;
+            var player2 = game.GetPlayer(2);
+            var initialScore = player2.Kills;
 
             // When
             var missile = new Missile(2) {X = ship.X, Y = ship.Y - 3};
             map.AddEntity(missile);
             ship.Destroy();
 
-            game.Update();
-            game.Update();
-            game.Update();
+            for (var i = 0; i < respawnDelay; i++) {
+                game.Update();
+            }
+            var finalScore = player2.Kills;
 
             // Then
             Assert.IsFalse(missile.Alive, "Missile was not destroyed, must've mis-timed the collision.");
-            Assert.AreEqual(1, player.Lives, "Player should have lost 2 lives.");
+            Assert.IsNull(player1.Ship, "Player 1 ship was not destroyed.");
+            Assert.IsTrue(finalScore > initialScore, "Player 2 score did not increase.");
         }
 
         [Test]
