@@ -296,6 +296,21 @@ namespace SpaceInvadersTest.Tests
         }
 
         [Test]
+        public void TestGetFlippedCopyHasPlayerShipsPopulated()
+        {
+            // Given
+            CoordinateFlipper flipper;
+            var game = CreateInterestingGameState(out flipper);
+
+            // When
+            var flipped = (Match) game.GetFlippedCopyOfMatch();
+
+            // Then
+            Assert.IsNotNull(flipped.GetPlayer(1).Ship, "Flipped state did not have a ship for player 1.");
+            Assert.IsNotNull(flipped.GetPlayer(2).Ship, "Flipped state did not have a ship for player 2.");
+        }
+
+        [Test]
         public void TestJsonDeserialization()
         {
             // Given
