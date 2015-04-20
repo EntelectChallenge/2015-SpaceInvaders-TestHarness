@@ -75,7 +75,9 @@ namespace SpaceInvaders.Core
 
             copy.AlienManager = AlienManager.CopyAndFlip(player.AlienManager, flipper, flippedEntities);
 
-            copy.Ship = Ship.CopyAndFlip(player.Ship, flipper, flippedEntities);
+            if (player.Ship != null) {
+                copy.Ship = Ship.CopyAndFlip(player.Ship, flipper, flippedEntities);
+            }
 
             return copy;
         }
