@@ -78,6 +78,10 @@ namespace SpaceInvaders.Core
                 copy.MissileController = MissileController.CopyAndFlip(player.MissileController, flipper, flippedEntities);
             }
 
+			if (player.AlienFactory != null) {
+				copy.AlienFactory = AlienFactory.CopyAndFlip (player.AlienFactory, flipper, flippedEntities);
+			}
+
             copy.AlienManager = AlienManager.CopyAndFlip(player.AlienManager, flipper, flippedEntities);
 
             if (player.Ship != null) {
