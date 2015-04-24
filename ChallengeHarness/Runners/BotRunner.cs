@@ -32,6 +32,7 @@ namespace ChallengeHarness.Runners
 
             BotLogFilename = Path.Combine(_workingPath, Settings.Default.BotOutputFolder,
                 Settings.Default.BotLogFilename);
+
             PlayerNumber = playerNumber;
             PlayerName = LoadBotName();
 
@@ -141,25 +142,24 @@ namespace ChallengeHarness.Runners
         }
 
         private Process CreateProcess()
-        {
-            if (!File.Exists(_processName))
-            {
-                throw new FileNotFoundException("Bot process file '" + _processName + "' not found.");
-            }
+		{
+			if (!File.Exists (_processName)) {
+				throw new FileNotFoundException ("Bot process file '" + _processName + "' not found.");
+			}
 
-            var arguments = " \"" + Settings.Default.BotOutputFolder + "\"";
-            if (Environment.OSVersion.Platform == PlatformID.Unix)
-            {
-                arguments = _processName + " " + arguments;
-                _processName = "/bin/bash";
-            }
+			var arguments = " \"" + Settings.Default.BotOutputFolder + "\"";
+			var processName = _processName;
+			if (Environment.OSVersion.Platform == PlatformID.Unix) {
+				arguments = _processName + " " + arguments;
+				processName = "/bin/bash";
+			}
 
             return new Process
             {
                 StartInfo =
                 {
                     WorkingDirectory = _workingPath,
-                    FileName = _processName,
+					FileName = processName,
                     Arguments = arguments,
                     CreateNoWindow = true,
                     WindowStyle = ProcessWindowStyle.Hidden,

@@ -139,5 +139,14 @@ namespace ChallengeHarness.Properties {
                 return ((string)(this["BotRunFilename"]));
             }
         }
+
+		[global::System.Configuration.ApplicationScopedSettingAttribute()]
+		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+		[global::System.Configuration.DefaultSettingValueAttribute("run.sh")]
+		public string BotRunFilenameLinux {
+			get {
+				return ((string)(this ["BotRunFilenameLinux"]));
+			}
+		}
     }
 }

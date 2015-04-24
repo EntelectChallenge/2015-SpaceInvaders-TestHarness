@@ -1,6 +1,7 @@
 ﻿using ChallengeHarness.Loggers;
 using ChallengeHarness.Properties;
 using ChallengeHarnessInterfaces;
+using System;
 
 namespace ChallengeHarness.Runners
 {
@@ -20,16 +21,17 @@ namespace ChallengeHarness.Runners
             _consoleLogger = new ConsoleLogger();
             _replayLogger = new ReplayLogger();
 
+			string runFilename = Environment.OSVersion.Platform == PlatformID.Unix ? Settings.Default.BotRunFilenameLinux : Settings.Default.BotRunFilename;
             _players = new BotRunner[2];
             _players[0] = new BotRunner(
                 1,
                 playerOneFolder,
-                Settings.Default.BotRunFilename
+				runFilename
                 );
             _players[1] = new BotRunner(
                 2,
                 playerTwoFolder,
-                Settings.Default.BotRunFilename
+				runFilename
                 );
 
             match.SetPlayerName(1, _players[0].PlayerName);
