@@ -153,7 +153,7 @@ namespace SpaceInvaders.Core
                 CheckBounds(x, y);
                 return Rows[y][x];
             }
-            catch (MoveNotOnMapException e)
+            catch (MoveNotOnMapException)
             {
                 return null;
             }
@@ -185,12 +185,12 @@ namespace SpaceInvaders.Core
                 entity.X = x;
                 entity.Y = y;
             }
-            catch (MoveNotOnMapException e)
+            catch (MoveNotOnMapException)
             {
                 AddEntity(entity);
                 throw;
             }
-            catch (CollisionException e)
+            catch (CollisionException)
             {
                 AddEntity(entity);
                 throw;
