@@ -10,7 +10,7 @@ Improvements and enhancements may be made to the test harness code over time, bu
 The test harness has been made available to the community for peer review and bug fixes, so if you find any bugs or have any concerns, please e-mail challenge@entelect.co.za, discuss it with us on the [Challenge forum](http://forum.entelect.co.za/) or submit a pull request on Github.
 
 ## Usage
-The easiest way to start using the test harness is to download the [binary release zip](https://github.com/EntelectChallenge/2015-SpaceInvaders-TestHarness/releases/download/1.0.0/2015-TestHarness-1.0.0-Windows.zip). You will also need the .NET framework if you don't have it installed already - you can get the offline installer for [.NET Framework 4.5.1 here](http://www.microsoft.com/en-za/download/details.aspx?id=40779).
+The easiest way to start using the test harness is to download the [binary release zip](https://github.com/EntelectChallenge/2015-SpaceInvaders-TestHarness/releases/download/1.0.1/2015-TestHarness-1.0.1-Windows.zip). You will also need the .NET framework if you don't have it installed already - you can get the offline installer for [.NET Framework 4.5.1 here](http://www.microsoft.com/en-za/download/details.aspx?id=40779).
 
 Once you have installed .NET and downloaded the binary release zip file, extract it and open a new Command Prompt in the test harness folder.
 
@@ -52,6 +52,19 @@ If you add a new feature you should add tests to cover it. After compiling the p
 Provided all the tests pass, you should find the coverage report in `SpaceInvadersTest\bin\debug\coverage\index.html`.
 
 ## Release Notes
+### v1.0.1 - 24/04/2015
+* Bugs fixed:
+  * A life is now deducted on ship spawning instead of player death which should give a consistent 1 ship & 3 lives, regardless of how they are used.
+  * Player.CopyAndFlip now also copies the:
+    * AlienFactory
+    * MissileController (thanks to @leppie)
+    * Ship
+  * Should no longer crash if the terminal is too small to render the game - instead falls back on scrolling output.
+  * Now correctly changes the process name to /bin/bash on Linux.
+  * Fixed MoveNotOnMapException that sometimes happened when spawning aliens (thanks to @leppie).
+* Minor features:
+  * On Linux the TestHarness will try to use run.sh instead of run.bat. Example files have been added to all sample bots and they will also be tagged as version 1.0.1.
+
 ### v1.0.0 - 09/04/2015
 Changelog:
 * Initial release.
