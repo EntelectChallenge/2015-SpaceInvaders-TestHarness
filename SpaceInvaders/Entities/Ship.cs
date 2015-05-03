@@ -117,11 +117,11 @@ namespace SpaceInvaders.Entities
                         var deltaX = PlayerNumber == 1 ? -1 : 1;
                         GetMap().MoveEntity(this, X + deltaX, Y);
                     }
-                    catch (CollisionException e)
+                    catch (CollisionException)
                     {
                         CommandFeedback = "Tried to move left, but collided with something.";
                     }
-                    catch (MoveNotOnMapException e)
+                    catch (MoveNotOnMapException)
                     {
                         CommandFeedback = "Tried to move left, but collided with something.";
                     }
@@ -133,11 +133,11 @@ namespace SpaceInvaders.Entities
                         var deltaX = PlayerNumber == 1 ? 1 : -1;
                         GetMap().MoveEntity(this, X + deltaX, Y);
                     }
-                    catch (CollisionException e)
+                    catch (CollisionException)
                     {
                         CommandFeedback = "Tried to move right, but collided with something.";
                     }
-                    catch (MoveNotOnMapException e)
+                    catch (MoveNotOnMapException)
                     {
                         CommandFeedback = "Tried to move right, but collided with something.";
                     }
@@ -152,7 +152,7 @@ namespace SpaceInvaders.Entities
                     {
                         ShieldFactory.BuildAtShip(PlayerNumber);
                     }
-                    catch (NotEnoughLivesException e)
+                    catch (NotEnoughLivesException)
                     {
                         CommandFeedback = "Tried to build shields but didn't have enough lives.";
                     }
@@ -165,15 +165,15 @@ namespace SpaceInvaders.Entities
                     {
                         BuildingFactory.Build(Command, PlayerNumber);
                     }
-                    catch (NotEnoughLivesException e)
+                    catch (NotEnoughLivesException)
                     {
                         CommandFeedback = "Tried to build a building but didn't have enough lives.";
                     }
-                    catch (AlreadyHasBuildingException e)
+                    catch (AlreadyHasBuildingException)
                     {
                         CommandFeedback = "Tried to build a building, but already had one.";
                     }
-                    catch (CollisionException e)
+                    catch (CollisionException)
                     {
                         CommandFeedback = "Tried to build a building but there was something in the way.";
                     }

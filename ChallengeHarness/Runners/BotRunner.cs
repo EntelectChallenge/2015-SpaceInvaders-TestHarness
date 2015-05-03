@@ -60,7 +60,7 @@ namespace ChallengeHarness.Runners
 
                 metaData = JsonConvert.DeserializeObject<BotMeta>(textData);
             }
-            catch (Exception ex)
+            catch
             {
                 return "Player " + PlayerNumber;
             }
