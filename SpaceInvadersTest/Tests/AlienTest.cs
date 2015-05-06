@@ -96,7 +96,37 @@ namespace SpaceInvadersTest.Tests
         }
 
         [Test]
-        public void TestAlienBackWallCollisionEndsGame()
+        public void TestAlienBackWallCollisionEndsGameForPlayer1()
+        {
+            // Given
+            var game = Match.GetInstance();
+            game.StartNewGame();
+
+            var player1 = game.GetPlayer(1);
+            var player2 = game.GetPlayer(2);
+
+            // When
+            player1.Ship.Command = ShipCommand.MoveLeft;
+            player2.Ship.Command = ShipCommand.MoveRight;
+
+            player1.AlienManager.TestPreventAllAliensShoot();
+            player2.AlienManager.TestMakeAllAliensMoveForward();
+            player2.AlienManager.TestPreventAllAliensShoot();
+
+            for (var i = 0; i < 11; i++)
+            {
+                game.Update();
+            }
+
+            // Then
+            Assert.IsTrue(game.GameIsOver(), "Game did not end from aliens hitting the back wall.");
+            Assert.IsTrue(game.GetPlayer(1).Lives <= 0, "All player 1 lives should have been lost.");
+            Assert.IsTrue(game.GetPlayer(2).Lives > 0, "Player 2 should still have lives.");
+            Assert.IsNull(game.GetPlayer(1).Ship, "Player 1 ship should have been destroyed.");
+        }
+
+        [Test]
+        public void TestAlienBackWallCollisionEndsGameForPlayer2()
         {
             // Given
             var game = Match.GetInstance();
@@ -111,7 +141,6 @@ namespace SpaceInvadersTest.Tests
 
             player1.AlienManager.TestMakeAllAliensMoveForward();
             player1.AlienManager.TestPreventAllAliensShoot();
-            player2.AlienManager.TestMakeAllAliensMoveForward();
             player2.AlienManager.TestPreventAllAliensShoot();
 
             for (var i = 0; i < 11; i++)
@@ -121,9 +150,8 @@ namespace SpaceInvadersTest.Tests
 
             // Then
             Assert.IsTrue(game.GameIsOver(), "Game did not end from aliens hitting the back wall.");
-            Assert.IsTrue(game.GetPlayer(1).Lives <= 0, "All player 1 lives should have been lost.");
             Assert.IsTrue(game.GetPlayer(2).Lives <= 0, "All player 2 lives should have been lost.");
-            Assert.IsNull(game.GetPlayer(1).Ship, "Player 1 ship should have been destroyed.");
+            Assert.IsTrue(game.GetPlayer(1).Lives > 0, "Player 1 should still have lives.");
             Assert.IsNull(game.GetPlayer(2).Ship, "Player 2 ship should have been destroyed.");
         }
 
