@@ -103,9 +103,9 @@ namespace SpaceInvaders.Core
 
             try
             {
+            	Lives--;
                 map.AddEntity(ship);
                 Ship = ship;
-                Lives--;
             }
             catch (CollisionException e)
             {
@@ -115,7 +115,7 @@ namespace SpaceInvaders.Core
                     e.Entity.Destroy();
                     ship.Destroy();
                 }
-                else if (e.Entity.GetType() == typeof (Alien))
+                else if (e.Entity.GetType() == typeof (Alien) || e.Entity.GetType() == typeof (Bullet))
                 {
                     e.Entity.Destroy();
                     ship.Destroy();
