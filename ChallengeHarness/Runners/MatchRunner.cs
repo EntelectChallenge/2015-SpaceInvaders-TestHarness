@@ -2,24 +2,21 @@
 using ChallengeHarness.Properties;
 using ChallengeHarnessInterfaces;
 using System;
+using System.Collections.Generic;
 
 namespace ChallengeHarness.Runners
 {
     public class MatchRunner
     {
-        private readonly ConsoleLogger _consoleLogger;
-        private readonly MatchLogger _logger;
+        private readonly List<ILogger> _loggers = new List<ILogger>(3);
+        private readonly MatchLogger _matchLogger = new MatchLogger();
+        private readonly ReplayLogger _replayLogger = new ReplayLogger();
         private readonly BotRunner[] _players;
-        private readonly ReplayLogger _replayLogger;
 
-        public MatchRunner(IMatch match, string playerOneFolder, string playerTwoFolder, IRenderer renderer)
+        public MatchRunner(IMatch match, string playerOneFolder, string playerTwoFolder, IRenderer renderer, bool consoleLoggingDisabled, bool consoleLoggingMustScroll)
         {
             Match = match;
             Renderer = renderer;
-
-            _logger = new MatchLogger();
-            _consoleLogger = new ConsoleLogger();
-            _replayLogger = new ReplayLogger();
 
 			string runFilename = Environment.OSVersion.Platform == PlatformID.Unix ? Settings.Default.BotRunFilenameLinux : Settings.Default.BotRunFilename;
             _players = new BotRunner[2];
@@ -36,6 +33,29 @@ namespace ChallengeHarness.Runners
 
             match.SetPlayerName(1, _players[0].PlayerName);
             match.SetPlayerName(2, _players[1].PlayerName);
+
+            SetupLogging(consoleLoggingDisabled, consoleLoggingMustScroll);
+        }
+
+        protected void SetupLogging(bool consoleLoggingDisabled, bool consoleLoggingMustScroll)
+        {
+            _loggers.Add(_matchLogger);
+            _loggers.Add(_replayLogger);
+
+            if (consoleLoggingDisabled)
+            {
+                return;
+            }
+
+            var mapHeight = Renderer.Render(Match).Map.Split('\n').Length + 1 + 2 + 2; // +1 title line, +2 spacing lines and +2 move lines
+            if ((IsConsoleTooSmallForNormalLogging(mapHeight)) || (consoleLoggingMustScroll))
+            {
+                _loggers.Add(new ConsoleScrollingLogger());
+            }
+            else
+            {
+                _loggers.Add(new ConsoleLogger());
+            }
         }
 
         public IMatch Match { get; private set; }
@@ -70,25 +90,31 @@ namespace ChallengeHarness.Runners
 
         private void LogAll(MatchRender renderP1)
         {
-            _logger.Log(renderP1);
-            _replayLogger.Log(renderP1);
-            _consoleLogger.Log(renderP1);
+            foreach (ILogger logger in _loggers)
+            {
+                logger.Log(renderP1);
+            }
         }
 
         private void LogAll(MatchSummary summary)
         {
-            _logger.Log(summary);
-            _replayLogger.Log(summary);
-            _consoleLogger.Log(summary);
+            foreach (ILogger logger in _loggers) {
+                logger.Log(summary);
+            }
         }
 
         private void CopyLogs()
         {
-            _logger.Close();
+            _matchLogger.Close();
 
-            _replayLogger.CopyMatchLog(_logger.FileName);
+            _replayLogger.CopyMatchLog(_matchLogger.FileName);
             _replayLogger.CopyBotLog(_players[0].BotLogFilename, 1);
             _replayLogger.CopyBotLog(_players[1].BotLogFilename, 2);
         }
+
+		private bool IsConsoleTooSmallForNormalLogging (int mapHeight)
+		{
+			return Console.WindowHeight < mapHeight;
+		}
     }
 }

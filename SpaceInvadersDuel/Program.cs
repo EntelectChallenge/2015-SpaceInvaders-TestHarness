@@ -39,7 +39,9 @@ namespace SpaceInvadersDuel
                     match,
                     options.PlayerOneBotFolder,
                     options.PlayerTwoBotFolder,
-                    new SpaceInvadersRenderer()
+                    new SpaceInvadersRenderer(),
+                    options.Quiet,
+                    options.Scrolling
                     );
                 runner.Run();
             }

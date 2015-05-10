@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace ChallengeHarness.Loggers
 {
-    public class ReplayLogger
+    public class ReplayLogger : ILogger
     {
         public ReplayLogger()
         {

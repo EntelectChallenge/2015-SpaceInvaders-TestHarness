@@ -5,7 +5,7 @@ using ChallengeHarnessInterfaces;
 
 namespace ChallengeHarness.Loggers
 {
-    public class MatchLogger
+    public class MatchLogger : ILogger
     {
         public MatchLogger()
         {

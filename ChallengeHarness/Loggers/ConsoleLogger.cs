@@ -4,7 +4,7 @@ using ChallengeHarnessInterfaces;
 
 namespace ChallengeHarness.Loggers
 {
-    public class ConsoleLogger
+    public class ConsoleLogger : ILogger
     {
 		protected const string title = "Entelect 100K Challenge: Space Invaders";
 
@@ -15,12 +15,8 @@ namespace ChallengeHarness.Loggers
 
         public void Log(MatchRender rendered)
         {
-			// 1 title line, 2 spacing lines and 2 move lines
-			if (IsConsoleTooSmall (CalculateRenderedMapHeight (rendered.Map) + 1 + 2 + 2)) {
-				LogWithScrolling (rendered);
-			} else {
-				LogWithoutScrolling (rendered);
-			}
+
+            LogWithoutScrolling(rendered);
         }
 
 		public void Log(MatchSummary summary)
@@ -28,20 +24,6 @@ namespace ChallengeHarness.Loggers
 			var message = String.Format("Match result: Player {0} wins{1}Win reason: {2}", summary.Winner, Environment.NewLine, summary.WinReason);
 			Debug.WriteLine(message);
 			Console.WriteLine(message);
-		}
-
-		protected void LogWithScrolling (MatchRender rendered)
-		{
-			WriteToConsoleAndDebug (title);
-			WriteToConsoleAndDebug (rendered.Map);
-
-			Console.WriteLine ();
-			Console.WriteLine ();
-
-			foreach (var move in rendered.Moves)
-			{
-				WriteToConsoleAndDebug(move);
-			}
 		}
 
 		protected void LogWithoutScrolling (MatchRender rendered)
@@ -59,12 +41,6 @@ namespace ChallengeHarness.Loggers
 			}
 		}
 
-		protected void WriteToConsoleAndDebug(string message) {
-			Debug.WriteLine(message);
-			Console.WriteLine (message);
-
-		}
-
         protected void WriteToConsoleAndDebug(int x, int y, string message)
         {
             Debug.WriteLine(message);
@@ -75,11 +51,6 @@ namespace ChallengeHarness.Loggers
             Console.SetCursorPosition(x, y);
             Console.WriteLine(message);
         }
-
-		protected bool IsConsoleTooSmall (int minHeight)
-		{
-			return Console.WindowHeight < minHeight;
-		}
 
         private int CalculateRenderedMapHeight(string mapView)
         {

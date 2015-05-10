@@ -16,6 +16,14 @@ namespace SpaceInvadersDuel
         [Option('r', "rules", DefaultValue = false,
             HelpText = "Prints out the rules and saves them in markdown format to rules.md")]
         public bool ShowRules { get; set; }
+        
+        [Option('q', "quiet", DefaultValue = false,
+            HelpText = "Disables console logging - logs will only be written to files.")]
+        public bool Quiet { get; set; }
+
+        [Option('s', "scrolling", DefaultValue = false,
+            HelpText = "Forces scrolling console log output, which shouldn't crash when running the harness from another application.")]
+        public bool Scrolling { get; set; }
 
         [HelpOption]
         public string GetUsage()
