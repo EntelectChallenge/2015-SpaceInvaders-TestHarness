@@ -205,7 +205,7 @@ namespace ChallengeHarness.Runners
                     _botTimer.ElapsedMilliseconds));
             }
 
-            if (p.ExitCode != 0)
+            if ((didExit) && (p.ExitCode != 0))
             {
                 OutputAppendLog(String.Format("[GAME]\tProcess exited with non-zero code {0} from player {1}.",
                     p.ExitCode, PlayerName));
