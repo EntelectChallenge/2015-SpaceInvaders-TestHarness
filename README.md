@@ -1,5 +1,5 @@
 # 2015 Space Invaders Test Harness
-The current release of the test harness is version 1.0.0.
+The current release of the test harness is version 1.0.2.
 
 For more information about the challenge see the [Challenge website](http://challenge.entelect.co.za/) .
 
@@ -10,7 +10,7 @@ Improvements and enhancements may be made to the test harness code over time, bu
 The test harness has been made available to the community for peer review and bug fixes, so if you find any bugs or have any concerns, please e-mail challenge@entelect.co.za, discuss it with us on the [Challenge forum](http://forum.entelect.co.za/) or submit a pull request on Github.
 
 ## Usage
-The easiest way to start using the test harness is to download the [binary release zip](https://github.com/EntelectChallenge/2015-SpaceInvaders-TestHarness/releases/download/1.0.1/2015-TestHarness-1.0.1-Windows.zip). You will also need the .NET framework if you don't have it installed already - you can get the offline installer for [.NET Framework 4.5.1 here](http://www.microsoft.com/en-za/download/details.aspx?id=40779).
+The easiest way to start using the test harness is to download the [binary release zip](https://github.com/EntelectChallenge/2015-SpaceInvaders-TestHarness/releases/download/1.0.2/2015-TestHarness-1.0.2-Windows.zip). You will also need the .NET framework if you don't have it installed already - you can get the offline installer for [.NET Framework 4.5.1 here](http://www.microsoft.com/en-za/download/details.aspx?id=40779).
 
 Once you have installed .NET and downloaded the binary release zip file, extract it and open a new Command Prompt in the test harness folder.
 
@@ -18,19 +18,26 @@ We have bundled the compiled C# sample bot with the harness in the player1 and p
 
 Once you have written your own bot you can override one of the player folders with your bot or you can use the command line arguments to specify the bots that should be run. You can see the available command line arguments by running `SpaceInvadersDuel.exe --help`:
 ```powershell
-SpaceInvadersDuel 1.0.0.0
+SpaceInvadersDuel 1.0.2.0
 Copyright c Microsoft 2015
 
-  -o, --one      (Default: player1) Relative path to the folder containing the
-                 player one bot
+  -o, --one          (Default: player1) Relative path to the folder containing
+                     the player one bot
 
-  -t, --two      (Default: player2) Relative path to the folder containing the
-                 player two bot
+  -t, --two          (Default: player2) Relative path to the folder containing
+                     the player two bot
 
-  -r, --rules    (Default: False) Prints out the rules and saves them in
-                 markdown format to rules.md
+  -r, --rules        (Default: False) Prints out the rules and saves them in
+                     markdown format to rules.md
 
-  --help         Display this help screen.
+  -q, --quiet        (Default: False) Disables console logging - logs will only
+                     be written to files.
+
+  -s, --scrolling    (Default: False) Forces scrolling console log output,
+                     which shouldn't crash when running the harness from
+                     another application.
+
+  --help             Display this help screen.
 ```
 
 So for example you can do something like this to run your bot against the bundled example bot: `SpaceInvadersDuel.exe -o ../mybot -t player2`.
@@ -52,6 +59,18 @@ If you add a new feature you should add tests to cover it. After compiling the p
 Provided all the tests pass, you should find the coverage report in `SpaceInvadersTest\bin\debug\coverage\index.html`.
 
 ## Release Notes
+### v1.0.2 - 10/05/2015
+* Bugs fixed
+  * Fixed some exceptions related to bot timeouts and killing the bot process (thanks Bernard Haeusermann)
+  * Ship spawn logic now deducts a life before spawn / collision checking which could have caused the life not to be deducted if spawning on an alien or bullet (thanks Jansen du Plessis).
+  * Aliens hitting the back wall now destroy the correct player (thanks Jansen du Plessis).
+  * Improved tests for aliens hitting the back wall a bit.
+  * Fixed run.sh newline characters and gave hints on installing dependencies (thanks Marius Kruger).
+  * Got rid of compiler warnings (thanks Bernhard Haeusermann).
+* Minor features:
+  * Added a command line option to force scrolling console logging (-s or --scrolling).
+  * Added a command line option to disable console logging (-q or --quiet).
+
 ### v1.0.1 - 24/04/2015
 * Bugs fixed:
   * A life is now deducted on ship spawning instead of player death which should give a consistent 1 ship & 3 lives, regardless of how they are used.
