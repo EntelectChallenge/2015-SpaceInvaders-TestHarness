@@ -64,7 +64,6 @@ namespace SpaceInvaders.Aliens.Strategies
     {
         private readonly int _chancesForFirstStrategy;
         private readonly int _chancesForSecondStrategy;
-        private readonly Random _rng = new Random();
 
         public RandomStrategySelector(int chancesForFirstStrategy, int chancesForSecondStrategy)
         {
@@ -74,7 +73,7 @@ namespace SpaceInvaders.Aliens.Strategies
 
         public bool UseFirstStrategy()
         {
-            return _rng.Next(0, _chancesForFirstStrategy + _chancesForSecondStrategy) < _chancesForFirstStrategy;
+            return StaticRandom.Next(0, _chancesForFirstStrategy + _chancesForSecondStrategy) < _chancesForFirstStrategy;
         }
     }
 }

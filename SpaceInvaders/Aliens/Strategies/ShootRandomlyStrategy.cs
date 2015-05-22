@@ -7,8 +7,6 @@ namespace SpaceInvaders.Aliens.Strategies
 {
     public class ShootRandomlyStrategy : IShootStrategy
     {
-        private readonly Random _rng = new Random();
-
         public ShootRandomlyStrategy(List<List<Alien>> waves)
         {
             Waves = waves;
@@ -20,7 +18,7 @@ namespace SpaceInvaders.Aliens.Strategies
         {
             var aliens = FindAliensThatCanShootSafely();
 
-            return aliens.Count == 0 ? null : aliens[_rng.Next(0, aliens.Count)];
+            return aliens.Count == 0 ? null : aliens[StaticRandom.Next(0, aliens.Count)];
         }
 
         public Alien SelectShootingAlienExcludingAliens(Entity target, List<Alien> excludedAliens)
@@ -31,7 +29,7 @@ namespace SpaceInvaders.Aliens.Strategies
                 aliens.Remove(alien);
             }
 
-            return aliens.Count == 0 ? null : aliens[_rng.Next(0, aliens.Count)];
+            return aliens.Count == 0 ? null : aliens[StaticRandom.Next(0, aliens.Count)];
         }
 
         private List<Alien> FindAliensThatCanShootSafely()
