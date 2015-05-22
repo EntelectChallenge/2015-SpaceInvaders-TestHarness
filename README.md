@@ -10,7 +10,7 @@ Improvements and enhancements may be made to the test harness code over time, bu
 The test harness has been made available to the community for peer review and bug fixes, so if you find any bugs or have any concerns, please e-mail challenge@entelect.co.za, discuss it with us on the [Challenge forum](http://forum.entelect.co.za/) or submit a pull request on Github.
 
 ## Usage
-The easiest way to start using the test harness is to download the [binary release zip](https://github.com/EntelectChallenge/2015-SpaceInvaders-TestHarness/releases/download/1.0.2/2015-TestHarness-1.0.2-Windows.zip). You will also need the .NET framework if you don't have it installed already - you can get the offline installer for [.NET Framework 4.5.1 here](http://www.microsoft.com/en-za/download/details.aspx?id=40779).
+The easiest way to start using the test harness is to download the [binary release zip](https://github.com/EntelectChallenge/2015-SpaceInvaders-TestHarness/releases/download/1.0.3/2015-TestHarness-1.0.3-Windows.zip). You will also need the .NET framework if you don't have it installed already - you can get the offline installer for [.NET Framework 4.5.1 here](http://www.microsoft.com/en-za/download/details.aspx?id=40779).
 
 Once you have installed .NET and downloaded the binary release zip file, extract it and open a new Command Prompt in the test harness folder.
 
@@ -18,26 +18,30 @@ We have bundled the compiled C# sample bot with the harness in the player1 and p
 
 Once you have written your own bot you can override one of the player folders with your bot or you can use the command line arguments to specify the bots that should be run. You can see the available command line arguments by running `SpaceInvadersDuel.exe --help`:
 ```powershell
-SpaceInvadersDuel 1.0.2.0
-Copyright c Microsoft 2015
-
+SpaceInvadersDuel 1.0.3.0                                                     
+Copyright c Microsoft 2015                                                    
+                                                                              
   -o, --one          (Default: player1) Relative path to the folder containing
-                     the player one bot
-
+                     the player one bot                                       
+                                                                              
   -t, --two          (Default: player2) Relative path to the folder containing
-                     the player two bot
-
-  -r, --rules        (Default: False) Prints out the rules and saves them in
-                     markdown format to rules.md
-
-  -q, --quiet        (Default: False) Disables console logging - logs will only
-                     be written to files.
-
-  -s, --scrolling    (Default: False) Forces scrolling console log output,
-                     which shouldn't crash when running the harness from
-                     another application.
-
-  --help             Display this help screen.
+                     the player two bot                                       
+                                                                              
+  -r, --rules        (Default: False) Prints out the rules and saves them in  
+                     markdown format to rules.md                              
+                                                                              
+  -q, --quiet        (Default: False) Disables console logging - logs will onl
+                     be written to files.                                     
+                                                                              
+  -s, --scrolling    (Default: False) Forces scrolling console log output,    
+                     which shouldn't crash when running the harness from      
+                     another application.                                     
+                                                                              
+  -l, --log          (Default: ) Relative path where you want the match replay
+                     log files to be output (instead of the default           
+                     Replays/{matchNumber}).                                  
+                                                                              
+  --help             Display this help screen.                                
 ```
 
 So for example you can do something like this to run your bot against the bundled example bot: `SpaceInvadersDuel.exe -o ../mybot -t player2`.
@@ -59,6 +63,13 @@ If you add a new feature you should add tests to cover it. After compiling the p
 Provided all the tests pass, you should find the coverage report in `SpaceInvadersTest\bin\debug\coverage\index.html`.
 
 ## Release Notes
+### v1.0.3 - 22/05/2015
+* Bugs fixed:
+  * Fixed alien randomness: both AlienManagers used seperate Random classes with the same seed, so randomness was the same for both players (thanks [AttieG](https://github.com/AttieG).
+  * Fixed application still crashing when not running a in a console (ScrollingLogger did a Console.clear() on creation).
+* Minor features:
+  * Added a command line option to specify a folder that the replay should be put into (-l or --log).
+
 ### v1.0.2 - 10/05/2015
 * Bugs fixed
   * Fixed some exceptions related to bot timeouts and killing the bot process (thanks Bernard Haeusermann)
