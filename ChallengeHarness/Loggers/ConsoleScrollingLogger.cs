@@ -10,7 +10,6 @@ namespace ChallengeHarness.Loggers
 
         public ConsoleScrollingLogger()
         {
-            Console.Clear();
         }
 
         public void Log(MatchRender rendered)
