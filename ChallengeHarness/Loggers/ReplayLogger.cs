@@ -8,30 +8,43 @@ namespace ChallengeHarness.Loggers
 {
     public class ReplayLogger : ILogger
     {
-        public ReplayLogger()
+        public ReplayLogger(string replayFolder)
+        {
+            if ((replayFolder != null) && (!replayFolder.Trim().Equals(""))) {
+                SetUserDefinedReplayFolder(replayFolder);
+            } else {
+                SetAutomaticReplayFolder();
+            }
+        }
+
+        public string ReplayDirectory { get; private set; }
+        public int MatchId { get; private set; }
+
+        private void SetUserDefinedReplayFolder(string replayFolder)
+        {
+            ReplayDirectory = replayFolder;
+
+            if (!Directory.Exists(ReplayDirectory))
+            {
+                Directory.CreateDirectory(ReplayDirectory);
+            }
+        }
+
+        private void SetAutomaticReplayFolder()
         {
             if (!Directory.Exists(Settings.Default.ReplaysFolder))
             {
                 Directory.CreateDirectory(Settings.Default.ReplaysFolder);
             }
 
-            var replays = Directory.GetDirectories(Settings.Default.ReplaysFolder);
+            ReplayDirectory = CalculateNextReplayFolderNumbered();
 
-            MatchId = 1;
-            if (replays.Length > 0)
-            {
-                Array.Sort(replays);
-                var lastReplayName = replays[replays.Length - 1].Split(Path.DirectorySeparatorChar)[1];
-                MatchId = Int16.Parse(lastReplayName) + 1;
-            }
-
-            ReplayDirectory = Settings.Default.ReplaysFolder + Path.DirectorySeparatorChar +
-                              MatchId.ToString("D4");
+            // Below would be a better option, but not switching to it now to avoid making a breaking
+            // change for people that have automated running their test matches...
+            // ReplayDirectory = CalculateNextReplayFolderDate(); 
+            
             Directory.CreateDirectory(ReplayDirectory);
         }
-
-        public string ReplayDirectory { get; private set; }
-        public int MatchId { get; private set; }
 
         public void Log(MatchRender rendered)
         {
@@ -71,6 +84,27 @@ namespace ChallengeHarness.Loggers
         public void CopyBotLog(string fileName, int playerNumber)
         {
             File.Copy(fileName, ReplayDirectory + Path.DirectorySeparatorChar + "bot" + playerNumber + ".log", true);
+        }
+
+        protected string CalculateNextReplayFolderNumbered()
+        {
+            var replays = Directory.GetDirectories(Settings.Default.ReplaysFolder);
+            MatchId = 1;
+            if (replays.Length > 0)
+            {
+                Array.Sort(replays);
+                var lastReplayName = replays[replays.Length - 1].Split(Path.DirectorySeparatorChar)[1];
+                MatchId = Int16.Parse(lastReplayName) + 1;
+            }
+
+            return Settings.Default.ReplaysFolder + Path.DirectorySeparatorChar + MatchId.ToString("D4");
+        }
+
+        protected string CalculateNextReplayFolderDate()
+        {
+            DateTime dt = new DateTime();
+            string dateString = dt.Year + "" + dt.Month + "" + dt.Day + "" + dt.Hour + "" + dt.Second + "" + dt.Millisecond;
+            return Settings.Default.ReplaysFolder + Path.DirectorySeparatorChar + dateString;
         }
 
         protected void SaveMap(MatchRender rendered)
