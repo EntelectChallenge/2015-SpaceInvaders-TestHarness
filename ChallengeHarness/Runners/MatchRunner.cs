@@ -10,10 +10,10 @@ namespace ChallengeHarness.Runners
     {
         private readonly List<ILogger> _loggers = new List<ILogger>(3);
         private readonly MatchLogger _matchLogger = new MatchLogger();
-        private readonly ReplayLogger _replayLogger = new ReplayLogger();
+        private readonly ReplayLogger _replayLogger;
         private readonly BotRunner[] _players;
 
-        public MatchRunner(IMatch match, string playerOneFolder, string playerTwoFolder, IRenderer renderer, bool consoleLoggingDisabled, bool consoleLoggingMustScroll)
+        public MatchRunner(IMatch match, string playerOneFolder, string playerTwoFolder, IRenderer renderer, bool consoleLoggingDisabled, bool consoleLoggingMustScroll, string replayFolder)
         {
             Match = match;
             Renderer = renderer;
@@ -33,6 +33,8 @@ namespace ChallengeHarness.Runners
 
             match.SetPlayerName(1, _players[0].PlayerName);
             match.SetPlayerName(2, _players[1].PlayerName);
+
+            _replayLogger = new ReplayLogger(replayFolder);
 
             SetupLogging(consoleLoggingDisabled, consoleLoggingMustScroll);
         }

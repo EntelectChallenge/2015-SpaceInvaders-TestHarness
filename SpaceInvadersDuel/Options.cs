@@ -25,6 +25,10 @@ namespace SpaceInvadersDuel
             HelpText = "Forces scrolling console log output, which shouldn't crash when running the harness from another application.")]
         public bool Scrolling { get; set; }
 
+        [Option('l', "log", DefaultValue = "",
+            HelpText = "Relative path where you want the match replay log files to be output (instead of the default Replays/{matchNumber}).")]
+        public string Log { get; set; }
+
         [HelpOption]
         public string GetUsage()
         {

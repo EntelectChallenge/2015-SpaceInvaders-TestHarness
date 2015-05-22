@@ -41,7 +41,8 @@ namespace SpaceInvadersDuel
                     options.PlayerTwoBotFolder,
                     new SpaceInvadersRenderer(),
                     options.Quiet,
-                    options.Scrolling
+                    options.Scrolling,
+                    options.Log
                     );
                 runner.Run();
             }
