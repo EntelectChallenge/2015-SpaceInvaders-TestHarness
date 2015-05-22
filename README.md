@@ -5,7 +5,7 @@ For more information about the challenge see the [Challenge website](http://chal
 
 The purpose of this project to allow contestants to test their bots on their local machines. The test harness contains the logic for processing moves and running a match between two bots. This project can also be used to get a better understanding of the rules and to help debug your bot.
 
-Improvements and enhancements may be made to the test harness code over time, but the rules should remain stable.
+Improvements and enhancements may be made to the test harness code overs time, but the rules should remain stable.
 
 The test harness has been made available to the community for peer review and bug fixes, so if you find any bugs or have any concerns, please e-mail challenge@entelect.co.za, discuss it with us on the [Challenge forum](http://forum.entelect.co.za/) or submit a pull request on Github.
 
@@ -65,7 +65,7 @@ Provided all the tests pass, you should find the coverage report in `SpaceInvade
 ## Release Notes
 ### v1.0.3 - 22/05/2015
 * Bugs fixed:
-  * Fixed alien randomness: both AlienManagers used seperate Random classes with the same seed, so randomness was the same for both players (thanks [AttieG](https://github.com/AttieG).
+  * Fixed alien randomness: both AlienManagers used separate Random classes with the same seed, so randomness was the same for both players (thanks [AttieG](https://github.com/AttieG).
   * Fixed application still crashing when not running a in a console (ScrollingLogger did a Console.clear() on creation).
 * Minor features:
   * Added a command line option to specify a folder that the replay should be put into (-l or --log).
