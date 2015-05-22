@@ -48,7 +48,7 @@ namespace ChallengeHarness.Runners
             }
 
             var mapHeight = Renderer.Render(Match).Map.Split('\n').Length + 1 + 2 + 2; // +1 title line, +2 spacing lines and +2 move lines
-            if ((IsConsoleTooSmallForNormalLogging(mapHeight)) || (consoleLoggingMustScroll))
+            if ((consoleLoggingMustScroll) || (IsConsoleTooSmallForNormalLogging(mapHeight)))
             {
                 _loggers.Add(new ConsoleScrollingLogger());
             }
