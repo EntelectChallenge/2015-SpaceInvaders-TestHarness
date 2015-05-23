@@ -49,6 +49,8 @@ namespace ChallengeHarness.Loggers
         public void Log(MatchRender rendered)
         {
             SaveMap(rendered);
+            SaveMapAdvanced(rendered);
+
             SaveState(rendered);
 
             SavePlayerOneMove(rendered);
@@ -110,6 +112,10 @@ namespace ChallengeHarness.Loggers
         protected void SaveMap(MatchRender rendered)
         {
             WriteFile(rendered.RoundNumber, Settings.Default.MapFilename, rendered.Map);
+        }
+        protected void SaveMapAdvanced(MatchRender rendered)
+        {
+            WriteFile(rendered.RoundNumber, Settings.Default.MapAdvancedFilename, rendered.MapAdvanced);
         }
 
         protected void SaveState(MatchRender rendered)

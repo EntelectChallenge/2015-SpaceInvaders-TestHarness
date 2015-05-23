@@ -17,6 +17,7 @@ namespace SpaceInvaders.Renderers
             var result = new MatchRender
             {
                 Map = RenderMap(match),
+                MapAdvanced = RenderMapAdvanced(match),
                 State = RenderState(match),
                 RoundNumber = match.GetRoundNumber(),
                 Round = String.Format("Round {0}", match.GetRoundNumber())
@@ -94,6 +95,15 @@ namespace SpaceInvaders.Renderers
             return output.ToString();
         }
 
+        protected string RenderMapAdvanced(Match match)
+        {
+            var output = new StringBuilder();
+            RenderPlayerDetailsAdvanced(match, 2, output);
+            RenderMap(match.Map, output);
+            RenderPlayerDetailsAdvanced(match, 1, output);
+            return output.ToString();
+        }
+
         protected string RenderState(Match match)
         {
             return JsonConvert.SerializeObject(
@@ -135,7 +145,7 @@ namespace SpaceInvaders.Renderers
         {
             AddLineToLines(String.Format("# Wave Size: {0, 2} ", player.AlienWaveSize), lines, width);
             AddLineToLines(String.Format("# Delta X: {0, 2} ", player.AlienManager.DeltaX), lines, width);
-            AddLineToLines(String.Format("# Energy: {0},/{1} ", player.AlienManager.ShotEnergy, player.AlienManager.ShotEnergyCost), lines, width);
+            AddLineToLines(String.Format("# Energy: {0}/{1} ", player.AlienManager.ShotEnergy, player.AlienManager.ShotEnergyCost), lines, width);
             AddLineToLines(String.Format("# Respawn: {0,1} ", player.RespawnTimer), lines, width);
         }
 
