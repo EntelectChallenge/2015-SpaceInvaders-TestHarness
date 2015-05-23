@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 using ChallengeHarnessInterfaces;
 using Newtonsoft.Json;
@@ -11,7 +12,7 @@ namespace SpaceInvaders.Renderers
     {
         public MatchRender Render(IMatch renderMatch)
         {
-            var match = (Match) renderMatch;
+            var match = (Match)renderMatch;
 
             var result = new MatchRender
             {
@@ -31,7 +32,7 @@ namespace SpaceInvaders.Renderers
 
         public MatchSummary RenderSummary(IMatch renderMatch)
         {
-            var match = (Match) renderMatch;
+            var match = (Match)renderMatch;
 
             var result = new MatchSummary
             {
@@ -105,40 +106,67 @@ namespace SpaceInvaders.Renderers
                 );
         }
 
-        protected void RenderPlayerDetails(Match match, int playerNumber, StringBuilder output)
+        public void AddBorderAndPlayerNameToLines(Player player, int width, List<string> lines)
         {
-            var player = match.GetPlayer(playerNumber);
-            var lines = new List<string>();
-            var width = match.Map.Width;
-
             lines.Add(new String('#', width) + Environment.NewLine);
 
             var statusLine = "# " + player.PlayerName + " ";
             lines.Add(
                 String.Format(statusLine + new String(' ', Math.Max(width - statusLine.Length - 1, 0)) + "#" +
                               Environment.NewLine));
+        }
 
-            statusLine = String.Format("# Round: {0,3} ", match.RoundNumber);
-            lines.Add(statusLine + new String(' ', width - statusLine.Length - 1) + "#" + Environment.NewLine);
+        public void AddLineToLines(string line, List<string> lines, int width)
+        {
+            lines.Add(line + new String(' ', width - line.Length - 1) + "#" + Environment.NewLine);
+        }
 
-            statusLine = String.Format("# Kills: {0} ", player.Kills);
-            lines.Add(statusLine + new String(' ', width - statusLine.Length - 1) + "#" + Environment.NewLine);
+        public void AddPlayerDetailsToLines(Player player, Match match, List<string> lines)
+        {
+            var width = match.Map.Width;
 
-            statusLine = String.Format("# Lives: {0,1} ", player.Lives);
-            lines.Add(statusLine + new String(' ', width - statusLine.Length - 1) + "#" + Environment.NewLine);
+            AddLineToLines(String.Format("# Round: {0,3} ", match.RoundNumber), lines, width);
+            AddLineToLines(String.Format("# Kills: {0} ", player.Kills), lines, width);
+            AddLineToLines(String.Format("# Lives: {0,1} ", player.Lives), lines, width);
+            AddLineToLines(String.Format("# Missiles: {0,1}/{1,1} ", player.Missiles.Count, player.MissileLimit), lines, width);
+        }
 
-            statusLine = String.Format("# Missiles: {0,1}/{1,1} ", player.Missiles.Count, player.MissileLimit);
-            lines.Add(statusLine + new String(' ', width - statusLine.Length - 1) + "#" + Environment.NewLine);
+        public void AddPlayerAdvancedDetailsToLines(Player player, int width, List<string> lines)
+        {
+            AddLineToLines(String.Format("# Wave Size: {0, 2} ", player.AlienWaveSize), lines, width);
+            AddLineToLines(String.Format("# Delta X: {0, 2} ", player.AlienManager.DeltaX), lines, width);
+            AddLineToLines(String.Format("# Energy: {0},/{1} ", player.AlienManager.ShotEnergy, player.AlienManager.ShotEnergyCost), lines, width);
+            AddLineToLines(String.Format("# Respawn: {0,1} ", player.RespawnTimer), lines, width);
+        }
 
+        public void AddPlayerLinesToOutput(Player player, List<string> lines, StringBuilder output)
+        {
             if (player.PlayerNumber == 1)
-            {
                 lines.Reverse();
-            }
 
             foreach (var line in lines)
-            {
                 output.Append(line);
-            }
+        }
+
+        protected void RenderPlayerDetails(Match match, int playerNumber, StringBuilder output)
+        {
+            var player = match.GetPlayer(playerNumber);
+            var width = match.Map.Width;
+            var lines = new List<string>();
+            AddBorderAndPlayerNameToLines(player, width, lines);
+            AddPlayerDetailsToLines(player, match, lines);
+            AddPlayerLinesToOutput(player, lines, output);
+        }
+
+        protected void RenderPlayerDetailsAdvanced(Match match, int playerNumber, StringBuilder output)
+        {
+            var player = match.GetPlayer(playerNumber);
+            var width = match.Map.Width;
+            var lines = new List<string>();
+            AddBorderAndPlayerNameToLines(player, width, lines);
+            AddPlayerAdvancedDetailsToLines(player, width, lines);
+            AddPlayerDetailsToLines(player, match, lines);
+            AddPlayerLinesToOutput(player, lines, output);
         }
 
         protected void RenderMap(Map map, StringBuilder output)
@@ -158,7 +186,7 @@ namespace SpaceInvaders.Renderers
             var typeChar = EntityTypeCharacter.EmptyTile;
             if (entity == null)
             {
-                return (char) typeChar;
+                return (char)typeChar;
             }
 
             if (entity.Type == EntityType.Ship)
@@ -198,7 +226,7 @@ namespace SpaceInvaders.Renderers
                 typeChar = EntityTypeCharacter.BuildingMissile;
             }
 
-            return (char) typeChar;
+            return (char)typeChar;
         }
     }
 }
