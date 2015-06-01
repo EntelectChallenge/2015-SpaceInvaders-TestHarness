@@ -15,7 +15,7 @@ namespace ChallengeHarness.Loggers
         public void Log(MatchRender rendered)
         {
             WriteToConsoleAndDebug(title);
-            WriteToConsoleAndDebug(rendered.Map);
+            WriteToConsoleAndDebug(rendered.MapAdvanced);
 
             Console.WriteLine();
             Console.WriteLine();

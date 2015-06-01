@@ -15,7 +15,6 @@ namespace ChallengeHarness.Loggers
 
         public void Log(MatchRender rendered)
         {
-
             LogWithoutScrolling(rendered);
         }
 
@@ -32,8 +31,8 @@ namespace ChallengeHarness.Loggers
 			
 			WriteToConsoleAndDebug (0, line++, title);
 
-			WriteToConsoleAndDebug(0, line, rendered.Map);
-			line += CalculateRenderedMapHeight(rendered.Map);
+			WriteToConsoleAndDebug(0, line, rendered.MapAdvanced);
+			line += CalculateRenderedMapHeight(rendered.MapAdvanced);
 
 			foreach (var move in rendered.Moves)
 			{
