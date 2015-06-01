@@ -79,7 +79,7 @@ namespace ChallengeHarness.Runners
             var process = CreateProcess();
             AddEventHandlersToProcess(process);
             StartProcess(process);
-            var result = HandleProcessResponse(process);
+            string result = HandleProcessResponse(process);
 
             AppendLogs();
             ClearRoundFiles();
@@ -185,31 +185,34 @@ namespace ChallengeHarness.Runners
 
         private void StartProcess(Process p)
         {
-            p.Start();
-            p.BeginOutputReadLine();
-            p.BeginErrorReadLine();
-
-            var didExit = p.WaitForExit(Settings.Default.MoveTimeoutSeconds*1000);
-            _botTimer.Stop();
-
-            if (!didExit)
+            using (ChangeErrorMode newErrorMode = new ChangeErrorMode(ChangeErrorMode.ErrorModes.FailCriticalErrors | ChangeErrorMode.ErrorModes.NoGpFaultErrorBox))
             {
-                if (!p.HasExited)
-                    p.Kill();
-                OutputAppendLog(String.Format("[GAME]\tBot {0} timed out after {1} ms.", PlayerName,
-                    _botTimer.ElapsedMilliseconds));
-                OutputAppendLog(String.Format("[GAME]\tKilled process {0}.", _processName));
-            }
-            else
-            {
-                OutputAppendLog(String.Format("[GAME]\tBot {0} finished in {1} ms.", PlayerName,
-                    _botTimer.ElapsedMilliseconds));
-            }
+                p.Start();
+                p.BeginOutputReadLine();
+                p.BeginErrorReadLine();
 
-            if ((didExit) && (p.ExitCode != 0))
-            {
-                OutputAppendLog(String.Format("[GAME]\tProcess exited with non-zero code {0} from player {1}.",
-                    p.ExitCode, PlayerName));
+                var didExit = p.WaitForExit(Settings.Default.MoveTimeoutSeconds * 1000);
+                _botTimer.Stop();
+
+                if (!didExit)
+                {
+                    if (!p.HasExited)
+                        p.Kill();
+                    OutputAppendLog(String.Format("[GAME]\tBot {0} timed out after {1} ms.", PlayerName,
+                        _botTimer.ElapsedMilliseconds));
+                    OutputAppendLog(String.Format("[GAME]\tKilled process {0}.", _processName));
+                }
+                else
+                {
+                    OutputAppendLog(String.Format("[GAME]\tBot {0} finished in {1} ms.", PlayerName,
+                        _botTimer.ElapsedMilliseconds));
+                }
+
+                if ((didExit) && (p.ExitCode != 0))
+                {
+                    OutputAppendLog(String.Format("[GAME]\tProcess exited with non-zero code {0} from player {1}.",
+                        p.ExitCode, PlayerName));
+                }
             }
         }
 

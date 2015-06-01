@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BotMeta.cs" />
+    <Compile Include="ChangeErrorMode.cs" />
     <Compile Include="Loggers\ConsoleLogger.cs" />
     <Compile Include="Loggers\ConsoleScrollingLogger.cs" />
     <Compile Include="Loggers\ILogger.cs" />
