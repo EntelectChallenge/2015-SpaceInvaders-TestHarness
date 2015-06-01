@@ -13,6 +13,7 @@ namespace ChallengeHarness.Runners
         private readonly MemoryStream _inMemoryLog;
         private readonly StreamWriter _inMemoryLogWriter;
         private readonly string _mapFilename;
+        private readonly string _mapAdvancedFilename;
         private readonly string _moveFilename;
         private readonly string _stateFilename;
         private readonly string _workingPath;
@@ -26,6 +27,7 @@ namespace ChallengeHarness.Runners
 
             _workingPath = Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + workingPath;
             _mapFilename = Path.Combine(_workingPath, Settings.Default.BotOutputFolder, Settings.Default.MapFilename);
+            _mapAdvancedFilename = Path.Combine(_workingPath, Settings.Default.BotOutputFolder, Settings.Default.MapAdvancedFilename);
             _stateFilename = Path.Combine(_workingPath, Settings.Default.BotOutputFolder, Settings.Default.StateFilename);
             _moveFilename = Path.Combine(_workingPath, Settings.Default.BotOutputFolder, Settings.Default.MoveFileName);
             _processName = Path.Combine(_workingPath, executableFilename);
@@ -71,6 +73,7 @@ namespace ChallengeHarness.Runners
         public string GetMove(MatchRender rendered)
         {
             OutputFile(_mapFilename, rendered.Map);
+            OutputFile(_mapAdvancedFilename, rendered.MapAdvanced);
             OutputFile(_stateFilename, rendered.State);
 
             _botTimer.Reset();
@@ -129,6 +132,7 @@ namespace ChallengeHarness.Runners
         private void ClearAllOutputFiles()
         {
             File.Delete(_mapFilename);
+            File.Delete(_mapAdvancedFilename);
             File.Delete(_stateFilename);
             File.Delete(_moveFilename);
             File.Delete(BotLogFilename);
@@ -137,6 +141,7 @@ namespace ChallengeHarness.Runners
         private void ClearRoundFiles()
         {
             File.Delete(_mapFilename);
+            File.Delete(_mapAdvancedFilename);
             File.Delete(_stateFilename);
             File.Delete(_moveFilename);
         }

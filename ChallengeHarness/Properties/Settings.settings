@@ -41,5 +41,14 @@
     <Setting Name="BotRunFilename" Type="System.String" Scope="Application">
       <Value Profile="(Default)">run.bat</Value>
     </Setting>
+    <Setting Name="BotRunFilenameLinux" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">run.sh</Value>
+    </Setting>
+    <Setting Name="MapAdvancedFilename" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">map-detailed.txt</Value>
+    </Setting>
+    <Setting Name="Setting" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>
