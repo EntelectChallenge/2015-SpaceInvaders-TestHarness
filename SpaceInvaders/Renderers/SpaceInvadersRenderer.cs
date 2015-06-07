@@ -136,17 +136,17 @@ namespace SpaceInvaders.Renderers
             var width = match.Map.Width;
 
             AddLineToLines(String.Format("# Round: {0,3} ", match.RoundNumber), lines, width);
-            AddLineToLines(String.Format("# Kills: {0} ", player.Kills), lines, width);
+            AddLineToLines(String.Format("# Kills: {0,3} ", player.Kills), lines, width);
             AddLineToLines(String.Format("# Lives: {0,1} ", player.Lives), lines, width);
             AddLineToLines(String.Format("# Missiles: {0,1}/{1,1} ", player.Missiles.Count, player.MissileLimit), lines, width);
         }
 
         public void AddPlayerAdvancedDetailsToLines(Player player, int width, List<string> lines)
         {
-            AddLineToLines(String.Format("# Wave Size: {0, 2} ", player.AlienWaveSize), lines, width);
-            AddLineToLines(String.Format("# Delta X: {0, 2} ", player.AlienManager.DeltaX), lines, width);
-            AddLineToLines(String.Format("# Energy: {0}/{1} ", player.AlienManager.ShotEnergy, player.AlienManager.ShotEnergyCost), lines, width);
-            AddLineToLines(String.Format("# Respawn: {0,1} ", player.RespawnTimer), lines, width);
+            AddLineToLines(String.Format("# Wave Size: {0,2} ", player.AlienWaveSize), lines, width);
+            AddLineToLines(String.Format("# Delta X: {0,2} ", player.AlienManager.DeltaX), lines, width);
+            AddLineToLines(String.Format("# Energy: {0,2}/{1} ", player.AlienManager.ShotEnergy, player.AlienManager.ShotEnergyCost), lines, width);
+            AddLineToLines(String.Format("# Respawn: {0,2} ", player.RespawnTimer), lines, width);
         }
 
         public void AddPlayerLinesToOutput(Player player, List<string> lines, StringBuilder output)
