@@ -585,6 +585,160 @@ namespace SpaceInvadersTest.Tests
         }
 
         [Test]
+        public void TestShipMovingLeftIntoMissileDies()
+        {
+            // Given
+            var game = Match.GetInstance();
+            game.StartNewGame();
+            var map = game.Map;
+
+            var player = game.GetPlayer(1);
+            var ship = player.Ship;
+            var aliens = game.GetPlayer(2).AlienManager;
+            var player2 = game.GetPlayer(2);
+            var killsBefore = player2.Kills;
+
+            // When
+            var missile = new Missile(2) { X = ship.X - 1, Y = ship.Y - 1 };
+            map.AddEntity(missile);
+
+            ship.Command = ShipCommand.MoveLeft;
+            game.Update();
+
+
+            // Then
+            var killsAfter = player2.Kills;
+            Assert.IsFalse(missile.Alive, "Missile was not destroyed, must've mis-timed the collision.");
+            Assert.IsNull(player.Ship, "Ship was not destroyed.");
+            Assert.IsTrue(killsAfter == killsBefore + 1, "Player 2 did not get the kill.");
+        }
+
+        [Test]
+        public void TestShipMovingRightIntoMissileDies()
+        {
+            // Given
+            var game = Match.GetInstance();
+            game.StartNewGame();
+            var map = game.Map;
+
+            var player = game.GetPlayer(1);
+            var ship = player.Ship;
+            var aliens = game.GetPlayer(2).AlienManager;
+            var player2 = game.GetPlayer(2);
+            var killsBefore = player2.Kills;
+
+            // When
+            var missile = new Missile(2) { X = ship.X + 3, Y = ship.Y - 1 };
+            map.AddEntity(missile);
+
+            ship.Command = ShipCommand.MoveRight;
+            game.Update();
+
+
+            // Then
+            var killsAfter = player2.Kills;
+            Assert.IsFalse(missile.Alive, "Missile was not destroyed, must've mis-timed the collision.");
+            Assert.IsNull(player.Ship, "Ship was not destroyed.");
+            Assert.IsTrue(killsAfter == killsBefore + 1, "Player 2 did not get the kill.");
+        }
+
+        [Test]
+        public void TestShipMovingLeftIntoBulletDies()
+        {
+            // Given
+            var game = Match.GetInstance();
+            game.StartNewGame();
+            var map = game.Map;
+
+            var player = game.GetPlayer(1);
+            var ship = player.Ship;
+            var aliens = game.GetPlayer(2).AlienManager;
+
+            // When
+            var bullet = new Bullet(2) { X = ship.X -1, Y = ship.Y - 1 };
+            map.AddEntity(bullet);
+
+            ship.Command = ShipCommand.MoveLeft;
+            game.Update();
+
+
+            // Then
+            Assert.IsFalse(bullet.Alive, "Bullet was not destroyed, must've mis-timed the collision.");
+            Assert.IsNull(player.Ship, "Ship was not destroyed.");
+        }
+
+        [Test]
+        public void TestShipMovingRightIntoBulletDies()
+        {
+            // Given
+            var game = Match.GetInstance();
+            game.StartNewGame();
+            var map = game.Map;
+
+            var player = game.GetPlayer(1);
+            var ship = player.Ship;
+            var aliens = game.GetPlayer(2).AlienManager;
+
+            // When
+            var bullet = new Bullet(2) { X = ship.X + 3, Y = ship.Y - 1 };
+            map.AddEntity(bullet);
+
+            ship.Command = ShipCommand.MoveRight;
+            game.Update();
+
+
+            // Then
+            Assert.IsFalse(bullet.Alive, "Bullet was not destroyed, must've mis-timed the collision.");
+            Assert.IsNull(player.Ship, "Ship was not destroyed.");
+        }
+
+        [Test]
+        public void TestShipMovingLeftIntoAlienDies()
+        {
+            // Given
+            var game = Match.GetInstance();
+            game.StartNewGame();
+
+            var player = game.GetPlayer(1);
+            var ship = player.Ship;
+            var aliens = game.GetPlayer(2).AlienManager;
+
+            // When
+            var alien = aliens.TestAddAlien(ship.X - 1, ship.Y - 1);
+            aliens.TestMakeAllAliensMoveForward();
+            ship.Command = ShipCommand.MoveLeft;
+            game.Update();
+            
+
+            // Then
+            Assert.IsFalse(alien.Alive, "Alien was not destroyed, must've mis-timed the collision.");
+            Assert.IsNull(player.Ship, "Ship was not destroyed.");
+        }
+
+        [Test]
+        public void TestShipMovingRightIntoAlienDies()
+        {
+            // Given
+            var game = Match.GetInstance();
+            game.StartNewGame();
+
+            var player = game.GetPlayer(1);
+            var ship = player.Ship;
+            var aliens = game.GetPlayer(2).AlienManager;
+
+            // When
+            var alien = aliens.TestAddAlien(ship.X +3 , ship.Y - 1);
+            aliens.TestMakeAllAliensMoveForward();
+            ship.Command = ShipCommand.MoveRight;
+            game.Update();
+
+
+            // Then
+            Assert.IsFalse(alien.Alive, "Alien was not destroyed, must've mis-timed the collision.");
+            Assert.IsNull(player.Ship, "Ship was not destroyed.");
+        }
+
+        [Test]
         public void TestShipSpawningOnAlienDies()
         {
             // Given
