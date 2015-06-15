@@ -201,7 +201,7 @@ namespace SpaceInvaders.Core
         {
             CheckBounds(targetX, targetY);
             CheckBounds(targetX + entity.Width - 1, targetY + entity.Height - 1);
-
+            List<Entity> collisions = new List<Entity>();
             for (var x = targetX; x < targetX + entity.Width; x++)
             {
                 for (var y = targetY; y < targetY + entity.Height; y++)
@@ -212,7 +212,8 @@ namespace SpaceInvaders.Core
                             var mapEntity = GetEntity(x, y);
                             if (mapEntity != null)
                             {
-                                throw new CollisionException {Entity = mapEntity};
+                                //store all collisions and then decide what to do with them
+                                collisions.Add(mapEntity);
                             }
                             break;
                         case MapAction.Add:
@@ -223,6 +224,10 @@ namespace SpaceInvaders.Core
                             break;
                     }
                 }
+            }
+            if (collisions.Count > 0)
+            {
+                throw new CollisionException {Entities = collisions, Entity = collisions[0]};
             }
         }
 

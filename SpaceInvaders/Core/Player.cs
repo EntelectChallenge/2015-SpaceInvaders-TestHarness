@@ -109,16 +109,19 @@ namespace SpaceInvaders.Core
             }
             catch (CollisionException e)
             {
-                if (e.Entity.GetType() == typeof (Missile))
+                foreach (Entity entity in e.Entities) 
                 {
-                    ((Missile) e.Entity).ScoreKill(ship);
-                    e.Entity.Destroy();
-                    ship.Destroy();
-                }
-                else if (e.Entity.GetType() == typeof (Alien) || e.Entity.GetType() == typeof (Bullet))
-                {
-                    e.Entity.Destroy();
-                    ship.Destroy();
+                    if (entity.GetType() == typeof (Missile))
+                    {
+                        ((Missile) entity).ScoreKill(ship);
+                        entity.Destroy();
+                        ship.Destroy();
+                    }
+                    else if (entity.GetType() == typeof (Alien) || entity.GetType() == typeof (Bullet))
+                    {
+                        entity.Destroy();
+                        ship.Destroy();
+                    }
                 }
             }
         }
