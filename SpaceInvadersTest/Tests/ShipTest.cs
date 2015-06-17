@@ -868,6 +868,105 @@ namespace SpaceInvadersTest.Tests
             Assert.IsTrue(finalScore == initialScore, "Player 2 increased.");
         }
 
+        [Test]
+        public void TestBuildingOnBullets()
+        {
+            // Given
+            var game = Match.GetInstance();
+            game.StartNewGame();
+
+            var player = game.GetPlayer(1);
+            var ship = player.Ship;
+            var map = game.Map;
+            var player2 = game.GetPlayer(2);
+
+            // When
+            //destroy ship so that bullet can pass through it just before it respawns
+            ship.Destroy();
+
+            var bullet = new Bullet(2) { X = ship.X, Y = ship.Y - 2 }; //left side of ship
+            map.AddEntity(bullet);
+
+
+            for (var i = 0; i < respawnDelay-1; i++)
+            {
+                game.Update();
+            }
+            ship.Command = ShipCommand.BuildMissileController;
+            game.Update();
+
+            // Then
+            Assert.IsTrue(bullet.Alive, "Bullet was destroyed. Should've remained.");
+            Assert.IsTrue(player.Lives == 1, "Player should be on 1 life after respawning.");
+            Assert.IsTrue(player.MissileController == null, "Missile controller should not have been built.");
+
+        }
+
+        [Test]
+        public void TestBuildingOnAliens()
+        {
+            // Given
+            var game = Match.GetInstance();
+            game.StartNewGame();
+
+            var player = game.GetPlayer(1);
+            var ship = player.Ship;
+            var map = game.Map;
+            var player2 = game.GetPlayer(2);
+            var aliens = player2.AlienManager;
+
+            // When
+            ship.Destroy();
+
+            var alien = aliens.TestAddAlien(ship.X - 1, ship.Y - 2);
+            aliens.TestMakeAllAliensMoveForward();
+
+
+            for (var i = 0; i < respawnDelay - 1; i++)
+            {
+                game.Update();
+            }
+            ship.Command = ShipCommand.BuildAlienFactory;
+            game.Update();
+
+            // Then
+            Assert.IsTrue(alien.Alive, "Alien was destroyed. Should've remained.");
+            Assert.IsTrue(player.Lives == 1, "Player should be on 1 life after respawning.");
+            Assert.IsTrue(player.AlienFactory == null, "Alien factory should not have been built.");
+        }
+
+        [Test]
+        public void TestBuildingOnMissile()
+        {
+            // Given
+            var game = Match.GetInstance();
+            game.StartNewGame();
+
+            var player = game.GetPlayer(1);
+            var ship = player.Ship;
+            var map = game.Map;
+            var player2 = game.GetPlayer(2);
+            var aliens = player2.AlienManager;
+
+            // When
+            ship.Destroy();
+
+            var missile = new Missile(2) { X = ship.X, Y = ship.Y - 2 };
+            map.AddEntity(missile);
+
+            for (var i = 0; i < respawnDelay - 1; i++)
+            {
+                game.Update();
+            }
+            ship.Command = ShipCommand.BuildAlienFactory;
+            game.Update();
+
+            // Then
+            Assert.IsTrue(missile.Alive, "Missile was destroyed. Should've remained.");
+            Assert.IsTrue(player.Lives == 1, "Player should be on 1 life after respawning.");
+            Assert.IsTrue(player.AlienFactory == null, "Alien factory should not have been built.");
+        }
+
         /**
          * This may be testing a case which is impossible. In order for 2 alien bullets to be in the same row, 
          * they need to be fired by aliens in different rows. This can only happen when spawn energy is high 
