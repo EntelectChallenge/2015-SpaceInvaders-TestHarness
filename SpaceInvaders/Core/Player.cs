@@ -103,7 +103,8 @@ namespace SpaceInvaders.Core
 
             try
             {
-            	Lives--;
+                if (Match.GetInstance().GetRoundNumber() > 0)
+            	    Lives--;
                 map.AddEntity(ship);
                 Ship = ship;
             }
