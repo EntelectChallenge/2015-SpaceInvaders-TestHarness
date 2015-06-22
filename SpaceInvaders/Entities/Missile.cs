@@ -53,9 +53,10 @@ namespace SpaceInvaders.Entities
             catch (CollisionException e)
             {
                 ScoreKill(e.Entity);
-
-                e.Entity.Destroy();
-                Destroy();
+                //throw the exception so that this missile and the entity it destroyed can be removed at an appropriate time (not mid-update).
+                throw e;
+                //e.Entity.Destroy();
+                //Destroy();
             }
         }
 

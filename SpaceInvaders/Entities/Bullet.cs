@@ -50,8 +50,12 @@ namespace SpaceInvaders.Entities
             }
             catch (CollisionException e)
             {
-                e.Entity.Destroy();
-                Destroy();
+                //throw the exception so that this bullet and the entity it destroyed can be removed at an appropriate time (not mid-update).
+                //This deals with the case where multiple bullets hit a building or ship simultaneously. 
+                //The ship will only be removed after all the bullets have been moved.
+                throw e;
+                //e.Entity.Destroy();
+                //Destroy();
             }
         }
 
