@@ -365,7 +365,7 @@ namespace SpaceInvadersTest.Tests
                 "Center shield tile was not destroyed");
             Assert.IsNull(map.GetEntity(ship.X + 1, ship.Y - 2),
                 "Second centre shield tile was not destroyed");
-            Assert.IsNull(map.GetEntity(ship.X + 1, ship.Y - 2),
+            Assert.IsNull(map.GetEntity(ship.X + 1, ship.Y - 3),
                 "Third centre shield tile was not destroyed");
             Assert.IsFalse(missile1.Alive, "Missile was not destroyed, must've mis-timed the collision.");
             Assert.IsFalse(missile2.Alive, "Missile was not destroyed, must've mis-timed the collision.");
