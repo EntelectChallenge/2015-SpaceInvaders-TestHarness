@@ -53,6 +53,11 @@ namespace SpaceInvaders.Core
         {
         }
 
+        public virtual void PreUpdate()
+        {
+
+        }
+
         protected Player GetPlayer()
         {
             return Match.GetInstance().GetPlayer(PlayerNumber);
