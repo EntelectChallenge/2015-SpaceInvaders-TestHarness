@@ -643,6 +643,182 @@ namespace SpaceInvadersTest.Tests
         }
 
         [Test]
+        public void TestSamePlayerMissilesDontDestroyEachother1()
+        {
+            // Given
+            var game = Match.GetInstance();
+            game.StartNewGame();
+            var map = game.Map;
+
+            var player = game.GetPlayer(1);
+            var ship = player.Ship;
+            var aliens = game.GetPlayer(2).AlienManager;
+            var player2 = game.GetPlayer(2);
+            var killsBefore = player2.Kills;
+
+            // When
+            //add them in the order the harness would add them
+            var missile1 = new Missile(1) { X = ship.X, Y = ship.Y - 2 };
+            map.AddEntity(missile1);
+            var missile2 = new Missile(1) { X = ship.X, Y = ship.Y - 1 };
+            map.AddEntity(missile2);
+
+            var missile3 = new Missile(2) { X = ship.X, Y = ship.Y - 3 };
+            map.AddEntity(missile3);
+            var missile4 = new Missile(2) { X = ship.X, Y = ship.Y - 4 };
+            map.AddEntity(missile4);
+
+            game.Update();
+
+
+            // Then
+            Assert.IsFalse(missile1.Alive, "Missile 1 wasn't destroyed.");
+            Assert.IsFalse(missile3.Alive, "Missile 3 wasn't destroyed.");
+            Assert.IsFalse(missile2.Alive, "Missile 2 wasn't destroyed.");
+            Assert.IsFalse(missile4.Alive, "Missile 4 wasn't destroyed.");
+        }
+
+        [Test]
+        public void TestSamePlayerMissilesDontDestroyEachother2()
+        {
+            // Given
+            var game = Match.GetInstance();
+            game.StartNewGame();
+            var map = game.Map;
+
+            var player = game.GetPlayer(1);
+            var ship = player.Ship;
+            var aliens = game.GetPlayer(2).AlienManager;
+            var player2 = game.GetPlayer(2);
+            var killsBefore = player2.Kills;
+
+            // When
+            //add them in the order the harness would add them
+            var missile1 = new Missile(1) { X = ship.X, Y = ship.Y - 2 };
+            map.AddEntity(missile1);
+            var missile2 = new Missile(1) { X = ship.X, Y = ship.Y - 1 };
+            map.AddEntity(missile2);
+
+            var missile3 = new Missile(2) { X = ship.X, Y = ship.Y - 4 };
+            map.AddEntity(missile3);
+            var missile4 = new Missile(2) { X = ship.X, Y = ship.Y - 5 };
+            map.AddEntity(missile4);
+
+            game.Update();
+
+
+            // Then
+            Assert.IsFalse(missile1.Alive, "Missile 1 wasn't destroyed.");
+            Assert.IsFalse(missile3.Alive, "Missile 3 wasn't destroyed.");
+            Assert.IsTrue(missile2.Alive, "Missile 2 was destroyed.");
+            Assert.IsTrue(missile4.Alive, "Missile 4 was destroyed.");
+            game.Update();
+            Assert.IsFalse(missile2.Alive, "Missile 2 wasn't destroyed.");
+            Assert.IsFalse(missile4.Alive, "Missile 4 wasn't destroyed.");
+        }
+
+        [Test]
+        public void TestSamePlayerMissilesDontDestroyEachother3()
+        {
+            // Given
+            var game = Match.GetInstance();
+            game.StartNewGame();
+            var map = game.Map;
+
+            var player = game.GetPlayer(1);
+            var ship = player.Ship;
+            var aliens = game.GetPlayer(2).AlienManager;
+            var player2 = game.GetPlayer(2);
+            var killsBefore = player2.Kills;
+
+            // When
+            //add them in the order the harness would add them
+            var missile1 = new Missile(1) { X = ship.X, Y = ship.Y - 2 };
+            map.AddEntity(missile1);
+            var missile2 = new Missile(1) { X = ship.X, Y = ship.Y - 1 };
+            map.AddEntity(missile2);
+
+            var missile3 = new Missile(2) { X = ship.X, Y = ship.Y - 4 };
+            map.AddEntity(missile3);
+
+            game.Update();
+
+
+            // Then
+            Assert.IsFalse(missile1.Alive, "Missile 1 wasn't destroyed.");
+            Assert.IsFalse(missile3.Alive, "Missile 3 wasn't destroyed.");
+            Assert.IsTrue(missile2.Alive, "Missile 2 was destroyed.");
+            game.Update();
+            Assert.IsTrue(missile2.Alive, "Missile 2 was destroyed.");
+        }
+
+        [Test]
+        public void TestSamePlayerMissilesDontDestroyEachother4()
+        {
+            // Given
+            var game = Match.GetInstance();
+            game.StartNewGame();
+            var map = game.Map;
+
+            var player = game.GetPlayer(1);
+            var ship = player.Ship;
+            var aliens = game.GetPlayer(2).AlienManager;
+            var player2 = game.GetPlayer(2);
+            var killsBefore = player2.Kills;
+
+            // When
+            //add them in the order the harness would add them
+            var missile1 = new Missile(1) { X = ship.X, Y = ship.Y - 2 };
+            map.AddEntity(missile1);
+
+            var missile3 = new Missile(2) { X = ship.X, Y = ship.Y - 4 };
+            map.AddEntity(missile3);
+            var missile4 = new Missile(2) { X = ship.X, Y = ship.Y - 5 };
+            map.AddEntity(missile4);
+
+            game.Update();
+
+
+            // Then
+            Assert.IsFalse(missile1.Alive, "Missile 1 wasn't destroyed.");
+            Assert.IsFalse(missile3.Alive, "Missile 3 wasn't destroyed.");
+            Assert.IsTrue(missile4.Alive, "Missile 4 was destroyed.");
+            game.Update();
+            Assert.IsTrue(missile4.Alive, "Missile 4 was destroyed.");
+        }
+
+        [Test]
+        public void TestMissilesPassThroughKillEachother()
+        {
+            // Given
+            var game = Match.GetInstance();
+            game.StartNewGame();
+            var map = game.Map;
+
+            var player = game.GetPlayer(1);
+            var ship = player.Ship;
+            var aliens = game.GetPlayer(2).AlienManager;
+            var player2 = game.GetPlayer(2);
+            var killsBefore = player2.Kills;
+
+            // When
+            //add them in the order the harness would add them
+            var missile1 = new Missile(1) { X = ship.X, Y = ship.Y - 3 };
+            map.AddEntity(missile1);
+
+            var missile3 = new Missile(2) { X = ship.X, Y = ship.Y - 4 };
+            map.AddEntity(missile3);
+
+            game.Update();
+
+
+            // Then
+            Assert.IsFalse(missile1.Alive, "Missile 1 wasn't destroyed.");
+            Assert.IsFalse(missile3.Alive, "Missile 3 wasn't destroyed.");
+        }
+
+
+        [Test]
         public void TestShipMovingLeftIntoBulletDies()
         {
             // Given

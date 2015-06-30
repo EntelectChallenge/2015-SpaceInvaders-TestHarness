@@ -71,6 +71,24 @@ namespace SpaceInvaders.Core
 
                 foreach (var entity in Entities[playerNumber][type])
                 {
+                    try
+                    {
+                        entity.PreUpdate(); //in the case of a missile will throw an exception if the missile will pass through another one
+                    }
+                    catch (CollisionException e)
+                    {
+                        collided.Add(entity);
+                        collided.AddRange(e.Entities);
+                    }
+                }
+            }
+            for (var playerNumber = 1; playerNumber <= 2; playerNumber++)
+            {
+                if ((!Entities.ContainsKey(playerNumber)) || (!Entities[playerNumber].ContainsKey(type)))
+                    continue;
+
+                foreach (var entity in Entities[playerNumber][type])
+                {
                     if (entity.Alive)
                     {
                         try

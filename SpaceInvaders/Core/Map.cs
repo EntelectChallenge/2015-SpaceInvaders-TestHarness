@@ -175,6 +175,11 @@ namespace SpaceInvaders.Core
             TraverseMap(MapAction.Remove, entity, entity.X, entity.Y);
         }
 
+        public void ClearEntity(Entity entity)
+        {
+            TraverseMap(MapAction.Remove, entity, entity.X, entity.Y);
+        }
+
         public void MoveEntity(Entity entity, int x, int y)
         {
             TraverseMap(MapAction.Remove, entity, entity.X, entity.Y);
@@ -220,7 +225,10 @@ namespace SpaceInvaders.Core
                             Rows[y][x] = entity;
                             break;
                         case MapAction.Remove:
-                            Rows[y][x] = null;
+                            if (Rows[y][x] == entity)
+                            {
+                                Rows[y][x] = null;
+                            }   
                             break;
                     }
                 }
