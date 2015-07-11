@@ -176,7 +176,6 @@ namespace SpaceInvaders.Entities
             }
             catch (CollisionException ex)
             {
-                bullet.Destroy();
                 ex.Entity.Destroy();
             }
         }

@@ -76,18 +76,16 @@ namespace SpaceInvaders.Entities
             {
                 X = missileX,
                 Y = missileY
-            };
-
-            player.Missiles.Add(missile);
-            missile.OnDestroyedEvent += OnMissileDestroyed;
+            };            
 
             try
             {
                 GetMap().AddEntity(missile);
+                player.Missiles.Add(missile);
+                missile.OnDestroyedEvent += OnMissileDestroyed;
             }
             catch (CollisionException ex)
             {
-                missile.Destroy();
                 missile.ScoreKill(ex.Entity);
                 ex.Entity.Destroy();
             }
