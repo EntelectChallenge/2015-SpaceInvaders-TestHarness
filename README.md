@@ -1,5 +1,5 @@
 # 2015 Space Invaders Test Harness
-The current release of the test harness is version 1.0.4.
+The current release of the test harness is version 1.0.5.
 
 For more information about the challenge see the [Challenge website](http://challenge.entelect.co.za/) .
 
@@ -10,7 +10,7 @@ Improvements and enhancements may be made to the test harness code overs time, b
 The test harness has been made available to the community for peer review and bug fixes, so if you find any bugs or have any concerns, please e-mail challenge@entelect.co.za, discuss it with us on the [Challenge forum](http://forum.entelect.co.za/) or submit a pull request on Github.
 
 ## Usage
-The easiest way to start using the test harness is to download the [binary release zip](https://github.com/EntelectChallenge/2015-SpaceInvaders-TestHarness/releases/download/1.0.4/2015-TestHarness-1.0.4-Windows.zip). You will also need the .NET framework if you don't have it installed already - you can get the offline installer for [.NET Framework 4.5.1 here](http://www.microsoft.com/en-za/download/details.aspx?id=40779).
+The easiest way to start using the test harness is to download the [binary release zip](https://github.com/EntelectChallenge/2015-SpaceInvaders-TestHarness/releases/download/1.0.5/2015-TestHarness-1.0.5-Windows.zip). You will also need the .NET framework if you don't have it installed already - you can get the offline installer for [.NET Framework 4.5.1 here](http://www.microsoft.com/en-za/download/details.aspx?id=40779).
 
 Once you have installed .NET and downloaded the binary release zip file, extract it and open a new Command Prompt in the test harness folder.
 
@@ -18,7 +18,7 @@ We have bundled the compiled C# sample bot with the harness in the player1 and p
 
 Once you have written your own bot you can override one of the player folders with your bot or you can use the command line arguments to specify the bots that should be run. You can see the available command line arguments by running `SpaceInvadersDuel.exe --help`:
 ```powershell
-SpaceInvadersDuel 1.0.4.0                                                     
+SpaceInvadersDuel 1.0.5.0                                                     
 Copyright c Microsoft 2015                                                    
                                                                               
   -o, --one          (Default: player1) Relative path to the folder containing
@@ -63,6 +63,14 @@ If you add a new feature you should add tests to cover it. After compiling the p
 Provided all the tests pass, you should find the coverage report in `SpaceInvadersTest\bin\debug\coverage\index.html`.
 
 ## Release Notes
+### v1.0.5 - 11/07/2015
+* Bugs fixed:
+  * Players now start with the correct 3 lives instead of only 2 (thanks [rm2k](https://github.com/rm2k)).
+  * Improved layout of kills on basic map output and several fields on advanced map output (thanks [jlaihong](https://github.com/jlaihong)).
+  * Simultaneous collisions of missiles and bullets now destroy all involved (thanks [DeanWookey](https://github.com/DeanWookey)).
+  * Player ships moving into aliens will now die (thanks [DeanWookey](https://github.com/DeanWookey)).
+  * Prevented alien shots fired in the last row from destroying the wall in front of the alien (thanks [rm2k](https://github.com/rm2k)).
+
 ### v1.0.4 - 01/06/2015
 * Bugs fixed:
   * Suppressed exception dialogs popped up when C&#35; bots had uncaught exceptions.
