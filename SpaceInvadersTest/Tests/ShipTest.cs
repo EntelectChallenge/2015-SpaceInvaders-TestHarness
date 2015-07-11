@@ -372,7 +372,7 @@ namespace SpaceInvadersTest.Tests
         }
 
         [Test]
-        public void TestTwoMissileAlienCollission()
+        public void TestTwoMissilePlayerTwoAlienCollission()
         {
             // Given
             var game = Match.GetInstance();
@@ -382,8 +382,9 @@ namespace SpaceInvadersTest.Tests
             var ship = player.Ship;
             var aliens = game.GetPlayer(2).AlienManager;
             var player1 = game.GetPlayer(1);
-            var initialScore = player1.Kills;
-
+            var player2 = game.GetPlayer(2);
+            var initialScoreP1 = player1.Kills;
+            var initialScoreP2 = player2.Kills;
 
             // When
             var missile2 = new Missile(2) { X = ship.X + 1, Y = ship.Y - 4 }; 
@@ -394,11 +395,50 @@ namespace SpaceInvadersTest.Tests
 
             game.Update();
 
-            var finalScore = player1.Kills;
+            var finalScoreP1 = player1.Kills;
+            var finalScoreP2 = player2.Kills;
 
             // Then
             Assert.IsFalse(alien.Alive, "Alien was not destroyed, must've mis-timed the collision.");
-            Assert.IsTrue(finalScore == initialScore+1, "Player 1 score did not increase.");
+            Assert.IsTrue(finalScoreP1 == initialScoreP1 + 1, "Player 1 score did not increase.");
+            Assert.IsTrue(finalScoreP2 == initialScoreP2, "Player 2 score increased.");
+
+            // Then
+            Assert.IsFalse(missile1.Alive, "Player 1's missile was not destroyed, must've mis-timed the collision.");
+            Assert.IsFalse(missile2.Alive, "Player 2's missile was not destroyed, must've mis-timed the collision.");
+        }
+
+        [Test]
+        public void TestTwoMissilePlayerOneAlienCollission()
+        {
+            // Given
+            var game = Match.GetInstance();
+            game.StartNewGame(true);
+            var map = game.Map;
+            var player = game.GetPlayer(1);
+            var ship = player.Ship;
+            var aliens = game.GetPlayer(1).AlienManager;
+            var player1 = game.GetPlayer(1);
+            var player2 = game.GetPlayer(2);
+            var initialScoreP1 = player1.Kills;
+            var initialScoreP2 = player2.Kills;
+
+            // When
+            var missile2 = new Missile(2) { X = ship.X + 1, Y = ship.Y - 4 };
+            var missile1 = new Missile(1) { X = ship.X + 1, Y = ship.Y - 2 };
+            map.AddEntity(missile1);
+            map.AddEntity(missile2);
+            var alien = aliens.TestAddAlien(ship.X + 1, ship.Y - 3);
+
+            game.Update();
+
+            var finalScoreP1 = player1.Kills;
+            var finalScoreP2 = player2.Kills;
+
+            // Then
+            Assert.IsFalse(alien.Alive, "Alien was not destroyed, must've mis-timed the collision.");
+            Assert.IsTrue(finalScoreP1 == initialScoreP1, "Player 1 score increased.");
+            Assert.IsTrue(finalScoreP2 == initialScoreP2 + 1, "Player 2 score did not increase.");
 
             // Then
             Assert.IsFalse(missile1.Alive, "Player 1's missile was not destroyed, must've mis-timed the collision.");
