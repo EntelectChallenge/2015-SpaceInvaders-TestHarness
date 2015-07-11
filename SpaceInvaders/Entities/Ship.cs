@@ -101,7 +101,31 @@ namespace SpaceInvaders.Entities
 
         public override void Update()
         {
-            ProcessCommand();
+            try
+            {
+                ProcessCommand();
+            }
+            catch (CollisionException e)
+            {
+                //if the ship moved and caused a collision exception, if it didn't collide with wall it should be destroyed.
+                if (e.Entity.GetType() != typeof (Wall))
+                {
+                    foreach (Entity entity in e.Entities)
+                    {
+                        if (e.Entity.GetType() == typeof(Missile))
+                        {
+                            Missile m = (Missile)entity;
+                            m.ScoreKill(this);
+                            m.Destroy();
+                        }
+                        else
+                        {
+                            entity.Destroy();
+                        }
+                    }
+                    this.Destroy();
+                }
+            }
         }
 
         private void ProcessCommand()
@@ -117,13 +141,15 @@ namespace SpaceInvaders.Entities
                         var deltaX = PlayerNumber == 1 ? -1 : 1;
                         GetMap().MoveEntity(this, X + deltaX, Y);
                     }
-                    catch (CollisionException)
+                    catch (CollisionException e)
                     {
-                        CommandFeedback = "Tried to move left, but collided with something.";
+                        CommandFeedback = "Moved left and collided with " + e.Entity.GetType();
+                        throw e;
                     }
                     catch (MoveNotOnMapException)
                     {
-                        CommandFeedback = "Tried to move left, but collided with something.";
+                        //this should be impossible since a wall is an entity and causes a collision exception
+                        CommandFeedback = "Tried to move left, but collided with the wall.";
                     }
                     break;
                 case ShipCommand.MoveRight:
@@ -133,13 +159,15 @@ namespace SpaceInvaders.Entities
                         var deltaX = PlayerNumber == 1 ? 1 : -1;
                         GetMap().MoveEntity(this, X + deltaX, Y);
                     }
-                    catch (CollisionException)
+                    catch (CollisionException e)
                     {
-                        CommandFeedback = "Tried to move right, but collided with something.";
+                        CommandFeedback = "Moved right and collided with " + e.Entity.GetType();
+                        throw e;
                     }
                     catch (MoveNotOnMapException)
                     {
-                        CommandFeedback = "Tried to move right, but collided with something.";
+                        //this should be impossible since a wall is an entity and causes a collision exception
+                        CommandFeedback = "Tried to move right, but collided with the wall.";
                     }
                     break;
                 case ShipCommand.Shoot:

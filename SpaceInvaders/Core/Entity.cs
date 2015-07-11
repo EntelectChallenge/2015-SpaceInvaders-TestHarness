@@ -1,6 +1,8 @@
 ﻿using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using SpaceInvaders.Exceptions;
+using System.Collections.Generic;
 
 namespace SpaceInvaders.Core
 {
@@ -49,6 +51,11 @@ namespace SpaceInvaders.Core
 
         public virtual void Update()
         {
+        }
+
+        public virtual void PreUpdate()
+        {
+
         }
 
         protected Player GetPlayer()

@@ -175,6 +175,11 @@ namespace SpaceInvaders.Core
             TraverseMap(MapAction.Remove, entity, entity.X, entity.Y);
         }
 
+        public void ClearEntity(Entity entity)
+        {
+            TraverseMap(MapAction.Remove, entity, entity.X, entity.Y);
+        }
+
         public void MoveEntity(Entity entity, int x, int y)
         {
             TraverseMap(MapAction.Remove, entity, entity.X, entity.Y);
@@ -201,7 +206,7 @@ namespace SpaceInvaders.Core
         {
             CheckBounds(targetX, targetY);
             CheckBounds(targetX + entity.Width - 1, targetY + entity.Height - 1);
-
+            List<Entity> collisions = new List<Entity>();
             for (var x = targetX; x < targetX + entity.Width; x++)
             {
                 for (var y = targetY; y < targetY + entity.Height; y++)
@@ -212,17 +217,25 @@ namespace SpaceInvaders.Core
                             var mapEntity = GetEntity(x, y);
                             if (mapEntity != null)
                             {
-                                throw new CollisionException {Entity = mapEntity};
+                                //store all collisions and then decide what to do with them
+                                collisions.Add(mapEntity);
                             }
                             break;
                         case MapAction.Add:
                             Rows[y][x] = entity;
                             break;
                         case MapAction.Remove:
-                            Rows[y][x] = null;
+                            if (Rows[y][x] == entity)
+                            {
+                                Rows[y][x] = null;
+                            }   
                             break;
                     }
                 }
+            }
+            if (collisions.Count > 0)
+            {
+                throw new CollisionException {Entities = collisions, Entity = collisions[0]};
             }
         }
 

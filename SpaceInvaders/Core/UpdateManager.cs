@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using SpaceInvaders.Exceptions;
 
 namespace SpaceInvaders.Core
 {
@@ -62,6 +63,25 @@ namespace SpaceInvaders.Core
 
         private void UpdateEntityGroup(EntityType type)
         {
+            List<Entity> collided = new List<Entity>();
+            for (var playerNumber = 1; playerNumber <= 2; playerNumber++)
+            {
+                if ((!Entities.ContainsKey(playerNumber)) || (!Entities[playerNumber].ContainsKey(type)))
+                    continue;
+
+                foreach (var entity in Entities[playerNumber][type])
+                {
+                    try
+                    {
+                        entity.PreUpdate(); //in the case of a missile will throw an exception if the missile will pass through another one
+                    }
+                    catch (CollisionException e)
+                    {
+                        collided.Add(entity);
+                        collided.AddRange(e.Entities);
+                    }
+                }
+            }
             for (var playerNumber = 1; playerNumber <= 2; playerNumber++)
             {
                 if ((!Entities.ContainsKey(playerNumber)) || (!Entities[playerNumber].ContainsKey(type)))
@@ -71,9 +91,23 @@ namespace SpaceInvaders.Core
                 {
                     if (entity.Alive)
                     {
-                        entity.Update();
+                        try
+                        {
+                            entity.Update();
+                        }
+                        catch (CollisionException e)
+                        {
+                            collided.Add(entity);
+                            collided.AddRange(e.Entities);
+                        }
                     }
                 }
+            }
+            //after all the updates have taken place for this entity type, then remove destroyed entities
+            //only destroy the entities that don't deal with their own CollisionExceptions like Missile and Bullet
+            foreach (Entity e in collided)
+            {
+                e.Destroy();
             }
         }
 

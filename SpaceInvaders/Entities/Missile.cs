@@ -43,20 +43,49 @@ namespace SpaceInvaders.Entities
             return copy;
         }
 
+        public override void PreUpdate()
+        {
+            GetMap().ClearEntity(this);
+            CheckNextPosition(); //checks this missile's next position for an opponent's missile
+            //The first of the two missiles to be cleared will detect the other and throw a collision exception.
+        }
+
         public override void Update()
         {
             var deltaY = (PlayerNumber == 1 ? -1 : 1);
             try
             {
-                GetMap().MoveEntity(this, X, Y + deltaY);
+                //GetMap().MoveEntity(this, X, Y + deltaY);
+                this.X = X;
+                this.Y = Y + deltaY;
+                GetMap().AddEntity(this);
+                //check where the missile was for a missile owned by the other player. If there is one, they must've passed through each other
             }
             catch (CollisionException e)
             {
                 ScoreKill(e.Entity);
-
-                e.Entity.Destroy();
-                Destroy();
+                //throw the exception so that this missile and the entity it destroyed can be removed at an appropriate time (not mid-update).
+                throw e;
             }
+        }
+
+        public void CheckNextPosition()
+        {
+            var deltaY = (PlayerNumber == 1 ? -1 : 1);
+                            Entity next = GetMap().GetEntity(X, Y + deltaY);
+                if (next != null)
+                {
+                    if (next.PlayerNumber != this.PlayerNumber)
+                    {
+                        if (next.GetType() == typeof(Missile))
+                        {
+                                        List<Entity> collisions = new List<Entity>();
+                            collisions.Add(this);
+                            collisions.Add(next);
+                            throw new CollisionException() { Entity = this, Entities = collisions };
+                        }
+                    }
+                }
         }
 
         public void ScoreKill(Entity entity)
