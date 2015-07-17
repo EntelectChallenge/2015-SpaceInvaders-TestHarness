@@ -190,36 +190,53 @@ namespace ChallengeHarness.Runners
 
         private void StartProcess(Process p)
         {
-            using (ChangeErrorMode newErrorMode = new ChangeErrorMode(ChangeErrorMode.ErrorModes.FailCriticalErrors | ChangeErrorMode.ErrorModes.NoGpFaultErrorBox))
-            {
-                p.Start();
-                p.BeginOutputReadLine();
-                p.BeginErrorReadLine();
-
-                var didExit = p.WaitForExit(Settings.Default.MoveTimeoutSeconds * 1000);
-                _botTimer.Stop();
-
-                if (!didExit)
-                {
-                    if (!p.HasExited)
-                        p.Kill();
-                    OutputAppendLog(String.Format("[GAME]\tBot {0} timed out after {1} ms.", PlayerName,
-                        _botTimer.ElapsedMilliseconds));
-                    OutputAppendLog(String.Format("[GAME]\tKilled process {0}.", _processName));
-                }
-                else
-                {
-                    OutputAppendLog(String.Format("[GAME]\tBot {0} finished in {1} ms.", PlayerName,
-                        _botTimer.ElapsedMilliseconds));
-                }
-
-                if ((didExit) && (p.ExitCode != 0))
-                {
-                    OutputAppendLog(String.Format("[GAME]\tProcess exited with non-zero code {0} from player {1}.",
-                        p.ExitCode, PlayerName));
-                }
-            }
+			if (Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX) {
+				StartProcessUnix (p);
+			} else {
+				StartProcessWindows (p);
+			}
         }
+
+		private void StartProcessUnix(Process p) {
+			StartProcessCommon (p);
+		}
+
+		private void StartProcessWindows(Process p) {
+			// Prevent silly error has occurred dialogs on Windows...
+			using (ChangeErrorMode newErrorMode = new ChangeErrorMode(ChangeErrorMode.ErrorModes.FailCriticalErrors | ChangeErrorMode.ErrorModes.NoGpFaultErrorBox))
+			{
+				StartProcessCommon (p);
+			}
+		}
+
+		private void StartProcessCommon(Process p) {
+			p.Start();
+			p.BeginOutputReadLine();
+			p.BeginErrorReadLine();
+
+			var didExit = p.WaitForExit(Settings.Default.MoveTimeoutSeconds * 1000);
+			_botTimer.Stop();
+
+			if (!didExit)
+			{
+				if (!p.HasExited)
+					p.Kill();
+				OutputAppendLog(String.Format("[GAME]\tBot {0} timed out after {1} ms.", PlayerName,
+					_botTimer.ElapsedMilliseconds));
+				OutputAppendLog(String.Format("[GAME]\tKilled process {0}.", _processName));
+			}
+			else
+			{
+				OutputAppendLog(String.Format("[GAME]\tBot {0} finished in {1} ms.", PlayerName,
+					_botTimer.ElapsedMilliseconds));
+			}
+
+			if ((didExit) && (p.ExitCode != 0))
+			{
+				OutputAppendLog(String.Format("[GAME]\tProcess exited with non-zero code {0} from player {1}.",
+					p.ExitCode, PlayerName));
+			}
+		}
 
         private string HandleProcessResponse(Process p)
         {
