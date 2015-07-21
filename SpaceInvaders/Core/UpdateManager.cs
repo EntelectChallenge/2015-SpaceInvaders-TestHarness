@@ -82,6 +82,18 @@ namespace SpaceInvaders.Core
                     }
                 }
             }
+
+            // Remove missiles that would have passed each other and that are thus destroyed, before update to avoid missile chains disappearing in 1 round
+            if (type == EntityType.Missile)
+            {
+                foreach (Entity e in collided)
+                {
+                    e.Destroy();
+                }
+
+                collided.Clear();
+            }
+
             for (var playerNumber = 1; playerNumber <= 2; playerNumber++)
             {
                 if ((!Entities.ContainsKey(playerNumber)) || (!Entities[playerNumber].ContainsKey(type)))
