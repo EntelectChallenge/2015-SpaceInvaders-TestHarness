@@ -78,7 +78,7 @@ namespace SpaceInvaders.Core
                     catch (CollisionException e)
                     {
                         collided.Add(entity);
-                        collided.AddRange(e.Entities);
+                        collided.Add(e.Entity);
                     }
                 }
             }

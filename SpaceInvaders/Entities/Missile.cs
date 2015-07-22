@@ -76,14 +76,11 @@ namespace SpaceInvaders.Entities
 
             if (next != null)
             {
-                if (next.PlayerNumber != this.PlayerNumber)
+                if (next.PlayerNumber != PlayerNumber)
                 {
                     if (next.GetType() == typeof(Missile))
                     {
-                        List<Entity> collisions = new List<Entity>();
-                        collisions.Add(this);
-                        collisions.Add(next);
-                        throw new CollisionException() { Entity = this, Entities = collisions };
+                        throw new CollisionException() { Entity = next };
                     }
                 }
             }
