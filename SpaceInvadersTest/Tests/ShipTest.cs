@@ -2,6 +2,8 @@
 using SpaceInvaders.Command;
 using SpaceInvaders.Core;
 using SpaceInvaders.Entities;
+using SpaceInvaders.Renderers;
+using System;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace SpaceInvadersTest.Tests
@@ -714,8 +716,8 @@ namespace SpaceInvadersTest.Tests
             // Then
             Assert.IsFalse(missile1.Alive, "Missile 1 wasn't destroyed.");
             Assert.IsFalse(missile3.Alive, "Missile 3 wasn't destroyed.");
-            Assert.IsFalse(missile2.Alive, "Missile 2 wasn't destroyed.");
-            Assert.IsFalse(missile4.Alive, "Missile 4 wasn't destroyed.");
+            Assert.IsTrue(missile2.Alive, "Missile 2 was destroyed.");
+            Assert.IsTrue(missile4.Alive, "Missile 4 was destroyed.");
         }
 
         [Test]
@@ -857,6 +859,86 @@ namespace SpaceInvadersTest.Tests
             Assert.IsFalse(missile3.Alive, "Missile 3 wasn't destroyed.");
         }
 
+        [Test]
+        public void TestMissilesFourMissilesTakeTwoTurnsToDie()
+        {
+            // Given
+            var renderer = new SpaceInvadersRenderer();
+            var game = Match.GetInstance();
+            game.StartNewGame();
+            var map = game.Map;
+
+            var player = game.GetPlayer(1);
+            var ship = player.Ship;
+            var aliens = game.GetPlayer(2).AlienManager;
+            var player2 = game.GetPlayer(2);
+            var killsBefore = player2.Kills;
+
+            // When
+            //add them in the order the harness would add them
+            var missile1 = new Missile(1) { X = ship.X, Y = ship.Y - 3 };
+            map.AddEntity(missile1);
+            var missile2 = new Missile(1) { X = ship.X, Y = ship.Y - 2 };
+            map.AddEntity(missile2);
+
+            var missile3 = new Missile(2) { X = ship.X, Y = ship.Y - 4 };
+            map.AddEntity(missile3);
+            var missile4 = new Missile(2) { X = ship.X, Y = ship.Y - 5 };
+            map.AddEntity(missile4);
+            
+            // Then
+            Console.WriteLine(renderer.Render(game).Map);
+
+            game.Update();
+            Console.WriteLine(renderer.Render(game).Map);
+
+            Assert.IsFalse(missile1.Alive, "Missile 1 wasn't destroyed.");
+            Assert.IsFalse(missile3.Alive, "Missile 3 wasn't destroyed.");
+            Assert.IsTrue(missile2.Alive, "Missile 2 was destroyed.");
+            Assert.IsTrue(missile4.Alive, "Missile 4 was destroyed.");
+
+            game.Update();
+            Console.WriteLine(renderer.Render(game).Map);
+
+            Assert.IsFalse(missile2.Alive, "Missile 2 was not destroyed in the 2nd updated either.");
+            Assert.IsFalse(missile4.Alive, "Missile 4 was not destroyed in the 2nd updated either.");
+        }
+
+        [Test]
+        public void TestMissilesOneDoesNotKillTwo()
+        {
+            // Given
+            var renderer = new SpaceInvadersRenderer();
+            var game = Match.GetInstance();
+            game.StartNewGame();
+            var map = game.Map;
+
+            var player = game.GetPlayer(1);
+            var ship = player.Ship;
+            var aliens = game.GetPlayer(2).AlienManager;
+            var player2 = game.GetPlayer(2);
+            var killsBefore = player2.Kills;
+
+            // When
+            //add them in the order the harness would add them
+            var missile1 = new Missile(1) { X = ship.X, Y = ship.Y - 3 };
+            map.AddEntity(missile1);
+
+            var missile3 = new Missile(2) { X = ship.X, Y = ship.Y - 4 };
+            map.AddEntity(missile3);
+            var missile4 = new Missile(2) { X = ship.X, Y = ship.Y - 5 };
+            map.AddEntity(missile4);
+
+            // Then
+            Console.WriteLine(renderer.Render(game).Map);
+
+            game.Update();
+            Console.WriteLine(renderer.Render(game).Map);
+
+            Assert.IsFalse(missile1.Alive, "Missile 1 wasn't destroyed.");
+            Assert.IsFalse(missile3.Alive, "Missile 3 wasn't destroyed.");
+            Assert.IsTrue(missile4.Alive, "Missile 4 was destroyed.");
+        }
 
         [Test]
         public void TestShipMovingLeftIntoBulletDies()
