@@ -147,24 +147,24 @@ namespace ChallengeHarness.Runners
         }
 
         private Process CreateProcess()
-		{
-			if (!File.Exists (_processName)) {
-				throw new FileNotFoundException ("Bot process file '" + _processName + "' not found.");
-			}
+        {
+            if (!File.Exists (_processName)) {
+                throw new FileNotFoundException ("Bot process file '" + _processName + "' not found.");
+            }
 
-			var arguments = " \"" + Settings.Default.BotOutputFolder + "\"";
-			var processName = _processName;
-			if (Environment.OSVersion.Platform == PlatformID.Unix) {
-				arguments = _processName + " " + arguments;
-				processName = "/bin/bash";
-			}
+            var arguments = " \"" + Settings.Default.BotOutputFolder + "\"";
+            var processName = _processName;
+            if (Environment.OSVersion.Platform == PlatformID.Unix) {
+                arguments = _processName + " " + arguments;
+                processName = "/bin/bash";
+            }
 
             return new Process
             {
                 StartInfo =
                 {
                     WorkingDirectory = _workingPath,
-					FileName = processName,
+                    FileName = processName,
                     Arguments = arguments,
                     CreateNoWindow = true,
                     WindowStyle = ProcessWindowStyle.Hidden,
@@ -190,53 +190,53 @@ namespace ChallengeHarness.Runners
 
         private void StartProcess(Process p)
         {
-			if (Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX) {
-				StartProcessUnix (p);
-			} else {
-				StartProcessWindows (p);
-			}
+            if (Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX) {
+                StartProcessUnix (p);
+            } else {
+                StartProcessWindows (p);
+            }
         }
 
-		private void StartProcessUnix(Process p) {
-			StartProcessCommon (p);
-		}
+        private void StartProcessUnix(Process p) {
+            StartProcessCommon (p);
+        }
 
-		private void StartProcessWindows(Process p) {
-			// Prevent silly error has occurred dialogs on Windows...
-			using (ChangeErrorMode newErrorMode = new ChangeErrorMode(ChangeErrorMode.ErrorModes.FailCriticalErrors | ChangeErrorMode.ErrorModes.NoGpFaultErrorBox))
-			{
-				StartProcessCommon (p);
-			}
-		}
+        private void StartProcessWindows(Process p) {
+            // Prevent silly error has occurred dialogs on Windows...
+            using (ChangeErrorMode newErrorMode = new ChangeErrorMode(ChangeErrorMode.ErrorModes.FailCriticalErrors | ChangeErrorMode.ErrorModes.NoGpFaultErrorBox))
+            {
+                StartProcessCommon (p);
+            }
+        }
 
-		private void StartProcessCommon(Process p) {
-			p.Start();
-			p.BeginOutputReadLine();
-			p.BeginErrorReadLine();
+        private void StartProcessCommon(Process p) {
+            p.Start();
+            p.BeginOutputReadLine();
+            p.BeginErrorReadLine();
 
-			var didExit = p.WaitForExit(Settings.Default.MoveTimeoutSeconds * 1000);
-			_botTimer.Stop();
+            var didExit = p.WaitForExit(Settings.Default.MoveTimeoutSeconds * 1000);
+            _botTimer.Stop();
 
-			if (!didExit)
-			{
-				if (!p.HasExited)
-					p.Kill();
-				OutputAppendLog(String.Format("[GAME]\tBot {0} timed out after {1} ms.", PlayerName,
-					_botTimer.ElapsedMilliseconds));
-				OutputAppendLog(String.Format("[GAME]\tKilled process {0}.", _processName));
-			}
-			else
-			{
-				OutputAppendLog(String.Format("[GAME]\tBot {0} finished in {1} ms.", PlayerName,
-					_botTimer.ElapsedMilliseconds));
-			}
+            if (!didExit)
+            {
+                if (!p.HasExited)
+                    p.Kill();
+                OutputAppendLog(String.Format("[GAME]\tBot {0} timed out after {1} ms.", PlayerName,
+                    _botTimer.ElapsedMilliseconds));
+                OutputAppendLog(String.Format("[GAME]\tKilled process {0}.", _processName));
+            }
+            else
+            {
+                OutputAppendLog(String.Format("[GAME]\tBot {0} finished in {1} ms.", PlayerName,
+                    _botTimer.ElapsedMilliseconds));
+            }
 
-			if ((didExit) && (p.ExitCode != 0))
-			{
-				OutputAppendLog(String.Format("[GAME]\tProcess exited with non-zero code {0} from player {1}.",
-					p.ExitCode, PlayerName));
-			}
-		}
+            if ((didExit) && (p.ExitCode != 0))
+            {
+                OutputAppendLog(String.Format("[GAME]\tProcess exited with non-zero code {0} from player {1}.",
+                    p.ExitCode, PlayerName));
+            }
+        }
 
         private string HandleProcessResponse(Process p)
         {

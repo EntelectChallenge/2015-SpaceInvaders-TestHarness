@@ -18,17 +18,17 @@ namespace ChallengeHarness.Runners
             Match = match;
             Renderer = renderer;
 
-			string runFilename = Environment.OSVersion.Platform == PlatformID.Unix ? Settings.Default.BotRunFilenameLinux : Settings.Default.BotRunFilename;
+            string runFilename = Environment.OSVersion.Platform == PlatformID.Unix ? Settings.Default.BotRunFilenameLinux : Settings.Default.BotRunFilename;
             _players = new BotRunner[2];
             _players[0] = new BotRunner(
                 1,
                 playerOneFolder,
-				runFilename
+                runFilename
                 );
             _players[1] = new BotRunner(
                 2,
                 playerTwoFolder,
-				runFilename
+                runFilename
                 );
 
             match.SetPlayerName(1, _players[0].PlayerName);
@@ -114,9 +114,9 @@ namespace ChallengeHarness.Runners
             _replayLogger.CopyBotLog(_players[1].BotLogFilename, 2);
         }
 
-		private bool IsConsoleTooSmallForNormalLogging (int mapHeight)
-		{
-			return Console.WindowHeight < mapHeight;
-		}
+        private bool IsConsoleTooSmallForNormalLogging (int mapHeight)
+        {
+            return Console.WindowHeight < mapHeight;
+        }
     }
 }

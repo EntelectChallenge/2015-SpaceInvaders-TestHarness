@@ -78,9 +78,9 @@ namespace SpaceInvaders.Core
                 copy.MissileController = MissileController.CopyAndFlip(player.MissileController, flipper, flippedEntities);
             }
 
-			if (player.AlienFactory != null) {
-				copy.AlienFactory = AlienFactory.CopyAndFlip (player.AlienFactory, flipper, flippedEntities);
-			}
+            if (player.AlienFactory != null) {
+                copy.AlienFactory = AlienFactory.CopyAndFlip (player.AlienFactory, flipper, flippedEntities);
+            }
 
             copy.AlienManager = AlienManager.CopyAndFlip(player.AlienManager, flipper, flippedEntities);
 
@@ -104,7 +104,7 @@ namespace SpaceInvaders.Core
             try
             {
                 if (Match.GetInstance().GetRoundNumber() > 0)
-            	    Lives--;
+                    Lives--;
                 map.AddEntity(ship);
                 Ship = ship;
             }

@@ -6,7 +6,7 @@ namespace ChallengeHarness.Loggers
 {
     public class ConsoleLogger : ILogger
     {
-		protected const string title = "Entelect 100K Challenge: Space Invaders";
+    	protected const string title = "Entelect 100K Challenge: Space Invaders";
 
         public ConsoleLogger()
         {
