@@ -72,20 +72,21 @@ namespace SpaceInvaders.Entities
         public void CheckNextPosition()
         {
             var deltaY = (PlayerNumber == 1 ? -1 : 1);
-                            Entity next = GetMap().GetEntity(X, Y + deltaY);
-                if (next != null)
+            Entity next = GetMap().GetEntity(X, Y + deltaY);
+
+            if (next != null)
+            {
+                if (next.PlayerNumber != this.PlayerNumber)
                 {
-                    if (next.PlayerNumber != this.PlayerNumber)
+                    if (next.GetType() == typeof(Missile))
                     {
-                        if (next.GetType() == typeof(Missile))
-                        {
-                                        List<Entity> collisions = new List<Entity>();
-                            collisions.Add(this);
-                            collisions.Add(next);
-                            throw new CollisionException() { Entity = this, Entities = collisions };
-                        }
+                        List<Entity> collisions = new List<Entity>();
+                        collisions.Add(this);
+                        collisions.Add(next);
+                        throw new CollisionException() { Entity = this, Entities = collisions };
                     }
                 }
+            }
         }
 
         public void ScoreKill(Entity entity)
